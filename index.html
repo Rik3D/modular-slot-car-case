@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuratore Modular Slotcar Case</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding: 20px 15px 100px 15px; max-width: 600px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 15px; }
+        header h1 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-main); }
+        header p { color: var(--text-muted); font-size: 0.9rem; margin-top: 5px; }
+
+        .features-inline { display: flex; justify-content: space-around; align-items: center; background: rgba(30, 41, 59, 0.5); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 10px; margin-bottom: 20px; font-size: 0.75rem; color: var(--text-muted); flex-wrap: wrap; gap: 6px; }
+        .features-inline span { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+        .features-inline strong { color: var(--text-main); }
+
+        .step-title { font-size: 1rem; text-transform: uppercase; color: var(--accent); margin: 25px 0 12px 0; font-weight: 700; letter-spacing: 0.5px; }
+        .grid-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .grid-full { grid-template-columns: 1fr; }
+        .card-option { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 10px; padding: 15px; cursor: pointer; transition: all 0.2s ease; position: relative; }
+        .card-option.selected { border-color: var(--accent); background: #1e293b; box-shadow: 0 0 10px rgba(239, 68, 68, 0.2); }
+        .card-option.disabled { opacity: 0.6; cursor: not-allowed; border-color: var(--border-color) !important; background: #151f2e; box-shadow: none !important; }
+        .card-option h3 { font-size: 0.95rem; margin-bottom: 5px; }
+        .card-option .price { font-weight: bold; color: var(--text-main); font-size: 1.1rem; }
+        .card-option .desc { font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; }
+        .badge-info { display: inline-block; background-color: #16a34a; color: #ffffff; font-size: 0.75rem; font-weight: bold; padding: 3px 8px; border-radius: 6px; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-warning { display: inline-block; background-color: #d97706; color: #ffffff; font-size: 0.75rem; font-weight: bold; padding: 3px 8px; border-radius: 6px; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-size { display: inline-block; background: #334155; color: #38bdf8; font-size: 0.72rem; font-weight: 600; padding: 2px 6px; border-radius: 4px; margin-top: 6px; }
+
+        .dividers-container { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 10px; padding: 15px; }
+        .dividers-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
+        .dividers-row:last-child { border-bottom: none; }
+        .divider-label h4 { font-size: 0.88rem; color: var(--text-main); }
+        .divider-label p { font-size: 0.75rem; color: var(--text-muted); }
+        .dividers-summary { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color); font-size: 0.82rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+        .dividers-summary strong { color: var(--text-main); }
+
+        .counter-controls { display: flex; align-items: center; gap: 10px; background: #0f172a; border: 1px solid var(--border-color); border-radius: 8px; padding: 4px 8px; }
+        .counter-btn { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 6px; width: 32px; height: 32px; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; }
+        .counter-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+        .counter-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .counter-value { font-size: 1rem; font-weight: bold; min-width: 24px; text-align: center; }
+
+        .input-group { margin-top: 15px; }
+        .input-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
+        .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: white; font-size: 0.95rem; }
+
+        /* Step 6 Switch & Custom Size */
+        .switch-container { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 10px; padding: 15px; cursor: pointer; }
+        .switch-info h3 { font-size: 0.95rem; margin-bottom: 3px; }
+        .switch-info p { font-size: 0.8rem; color: #22c55e; font-weight: 600; }
+        .toggle-switch { position: relative; width: 50px; height: 26px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .3s; border-radius: 26px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+        input:checked + .slider { background-color: #22c55e; }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        .size-panel { display: none; margin-top: 15px; background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-color); border-radius: 10px; padding: 15px; }
+        .inputs-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 5px; }
+        .inputs-3col input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--card-bg); color: white; font-size: 0.9rem; text-align: center; }
+        .inputs-3col label { font-size: 0.75rem; color: var(--text-muted); display: block; text-align: center; margin-bottom: 4px; }
+        .size-note { font-size: 0.72rem; color: #f59e0b; margin-top: 10px; text-align: center; }
+
+        .swatch-box { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+        .swatch-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; border: 1px solid rgba(255,255,255,0.4); }
+
+        .livery-details-box { background: rgba(15, 23, 42, 0.6); border-left: 3px solid var(--accent); padding: 12px; border-radius: 6px; margin-top: 12px; font-size: 0.82rem; display: none; }
+        .livery-details-box h4 { color: var(--text-main); font-size: 0.88rem; margin-bottom: 6px; }
+        .livery-details-box ul { list-style: none; padding-left: 0; }
+        .livery-details-box li { color: var(--text-muted); margin-bottom: 6px; line-height: 1.35; display: flex; align-items: center; justify-content: space-between; }
+        .livery-details-box li strong { color: var(--text-main); }
+
+        .faq-accordion { margin-top: 25px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; }
+        .faq-header { padding: 14px 16px; font-size: 0.85rem; font-weight: bold; color: var(--text-main); cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); }
+        .faq-content { display: none; padding: 15px; border-top: 1px solid var(--border-color); background: rgba(15, 23, 42, 0.4); }
+        .faq-links-group { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+        .faq-link { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-weight: bold; text-decoration: underline; font-size: 0.82rem; }
+
+        .info-disclaimer-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 18px; margin-top: 15px; margin-bottom: 20px; }
+        .info-disclaimer-section { margin-bottom: 15px; }
+        .info-disclaimer-section:last-child { margin-bottom: 0; }
+        .info-disclaimer-title { font-size: 0.9rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .info-disclaimer-list { list-style: none; padding-left: 0; margin: 0; }
+        .info-disclaimer-list li { font-size: 0.8rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 6px; position: relative; padding-left: 14px; }
+        .info-disclaimer-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+        .info-disclaimer-list li strong { color: var(--text-main); }
+        .info-disclaimer-text { font-size: 0.8rem; color: var(--text-muted); line-height: 1.45; }
+        
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #090d16; border-top: 1px solid var(--border-color); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto; z-index: 100; }
+        .total-price { font-size: 1.3rem; font-weight: bold; }
+        .total-price span { font-size: 0.8rem; color: var(--text-muted); display: block; }
+        .btn-whatsapp { background: #22c55e; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .btn-whatsapp:hover { background: #16a34a; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Modular Slotcar Case</h1>
+        <p>Configura la tua valigetta su misura</p>
+    </header>
+
+    <div class="features-inline">
+        <span>🪶 <strong>Leggerissima (&lt;2 kg base)</strong></span>
+        <span>🧩 <strong>100% Modulare</strong></span>
+        <span>🛡️ <strong>PETG High-Impact</strong></span>
+        <span>🇮🇹 <strong>Made in Italy</strong></span>
+    </div>
+
+    <!-- STEP 1: CONFIGURAZIONE BASE -->
+    <div class="step-title">1. Scegli il Modello</div>
+    <div class="grid-options">
+        <div class="card-option selected" onclick="selectModel('base', 179)" id="model-base">
+            <h3>Starter Pack</h3>
+            <div class="price">Da €179</div>
+            <div class="desc">Corpo centrale + porte + maniglia + 4 divisori.</div>
+            <span class="badge-size">📐 300L x 265P x 300H mm</span>
+        </div>
+        <div class="card-option" onclick="selectModel('full', 289)" id="model-full">
+            <h3>Valigetta Full</h3>
+            <div class="price">Da €289</div>
+            <div class="desc">Starter Pack + Porta Superiore + Vasca Inferiore + Contenitore Controller.</div>
+            <span class="badge-size">📐 300L x 265P x 440H mm</span>
+        </div>
+    </div>
+
+    <!-- STEP 2: SCELTA DIVISORI UNIFICATA -->
+    <div class="step-title">2. Scegli i tuoi Divisori</div>
+    <div class="dividers-container">
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+            4 divisori inclusi nel modello base. Oltre i 4 pezzi: <strong>+€8 cad.</strong>
+        </div>
+
+        <div class="dividers-row">
+            <div class="divider-label">
+                <h4>Ripiano Multiuso / Liscio</h4>
+                <p>Superficie piana per scatole e minuterie</p>
+            </div>
+            <div class="counter-controls">
+                <button class="counter-btn" onclick="changeDivider('liscio', -1)">-</button>
+                <span class="counter-value" id="count-liscio">1</span>
+                <button class="counter-btn" onclick="changeDivider('liscio', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="dividers-row">
+            <div class="divider-label">
+                <h4>Porta slotcar</h4>
+                <p>Alloggiamento sagomato per posizionare la slotcar</p>
+            </div>
+            <div class="counter-controls">
+                <button class="counter-btn" onclick="changeDivider('slotcar', -1)">-</button>
+                <span class="counter-value" id="count-slotcar">1</span>
+                <button class="counter-btn" onclick="changeDivider('slotcar', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="dividers-row">
+            <div class="divider-label">
+                <h4>Porta attrezzi / oli</h4>
+                <p>Alloggiamenti per cacciaviti, chiavi e boccette di olio/additivo</p>
+            </div>
+            <div class="counter-controls">
+                <button class="counter-btn" onclick="changeDivider('attrezziOli', -1)">-</button>
+                <span class="counter-value" id="count-attrezziOli">1</span>
+                <button class="counter-btn" onclick="changeDivider('attrezziOli', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="dividers-row">
+            <div class="divider-label">
+                <h4>Porta gomme</h4>
+                <p>Sede specifica per posizionare le gomme</p>
+            </div>
+            <div class="counter-controls">
+                <button class="counter-btn" onclick="changeDivider('gomme', -1)">-</button>
+                <span class="counter-value" id="count-gomme">1</span>
+                <button class="counter-btn" onclick="changeDivider('gomme', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="dividers-summary">
+            <span>Totale Divisori Selezionati: <strong id="total-dividers-count">4</strong></span>
+            <span id="dividers-extra-cost-badge" style="color: var(--accent); font-weight: bold;">(Inclusi)</span>
+        </div>
+    </div>
+
+    <!-- STEP 3: ASSEMBLAGGIO -->
+    <div class="step-title">3. Modalità di Consegna</div>
+    <div class="grid-options">
+        <div class="card-option selected" onclick="selectAssembly('diy', 0)" id="assembly-diy">
+            <h3>Kit da Montare</h3>
+            <div class="price">+ €0</div>
+            <div class="desc">Tutti i pezzi stampati e minuterie da assemblare.</div>
+        </div>
+        <div class="card-option" onclick="selectAssembly('ready', 69)" id="assembly-ready">
+            <h3>Ready-to-Race</h3>
+            <div class="price">+ €69</div>
+            <div class="desc">Montata, collaudata e pronta all'uso.</div>
+        </div>
+    </div>
+
+    <!-- STEP 4: EXTRA -->
+    <div class="step-title">4. Moduli Extra & Accessori</div>
+    <div class="grid-options grid-full">
+        <div class="card-option" id="extra-vasca" onclick="toggleExtra('vascaExtra', 45)">
+            <h3>Vasca Inferiore (+ €45)</h3>
+            <div class="desc">Modulo extra inferiore per ulteriori accessori.</div>
+            <div id="vasca-badge-container"></div>
+        </div>
+        <div class="card-option" id="extra-porta-sup" onclick="toggleExtra('portaSuperiore', 45)">
+            <h3>Porta Superiore (+ €45)</h3>
+            <div class="desc">Modulo per la parte superiore della valigetta.</div>
+            <div id="porta-sup-badge-container"></div>
+        </div>
+        <div class="card-option" id="extra-box" onclick="toggleExtra('boxController', 25)">
+            <h3>Contenitore Controller (+ €25)</h3>
+            <div class="desc">Contenitore protettivo per il tuo pulsante da gara.</div>
+            <div id="box-badge-container"></div>
+        </div>
+    </div>
+
+    <!-- STEP 5: PERSONALIZZAZIONE LIVREE RACING -->
+    <div class="step-title">5. Personalizzazione Colori</div>
+    <div class="grid-options">
+        <div class="card-option selected" onclick="selectColorMode('standard', 0)" id="colormode-standard">
+            <h3>Standard / Random</h3>
+            <div class="price">+ €0</div>
+            <div class="desc">Combinazione standard Nero/Rosso di serie.</div>
+        </div>
+        <div class="card-option" onclick="selectColorMode('custom', 15)" id="colormode-custom">
+            <h3>Livree Racing Custom</h3>
+            <div class="price">+ €15</div>
+            <div class="desc">Scegli tra le 4 livree racing iconiche.</div>
+        </div>
+    </div>
+
+    <div id="livery-select-container" style="display: none; margin-top: 15px;">
+        <div class="input-group">
+            <label>Seleziona Livrea Racing:</label>
+            <select id="livery-select" onchange="onLiveryChange(this.value)">
+                <option value="gulf">Livrea Heritage Endurance (ex-Gulf)</option>
+                <option value="martini">Livrea Rally Classico (ex-Martini)</option>
+                <option value="jps">Livrea Stealth Racing (ex-JPS)</option>
+                <option value="corsa">Livrea Competizione (Rosso Corsa)</option>
+            </select>
+        </div>
+
+        <div class="livery-details-box" id="livery-details-box">
+            <h4 id="livery-title">Dettaglio Componenti Livrea:</h4>
+            <ul>
+                <li id="detail-body">
+                    <span>• <strong>Corpo centrale e porte:</strong> <span id="txtBody">Azzurro, Bianco e Arancione</span></span>
+                    <div class="swatch-box" id="swatchBody"></div>
+                </li>
+                <li id="detail-handle">
+                    <span>• <strong>Maniglia:</strong> <span id="txtHandle">Nera</span></span>
+                    <div class="swatch-box" id="swatchHandle"></div>
+                </li>
+                <li id="detail-top-tray" style="display: none;">
+                    <span>• <strong>Porta Superiore:</strong> <span id="txtTopTray">Arancione</span></span>
+                    <div class="swatch-box" id="swatchTopTray"></div>
+                </li>
+                <li id="detail-bottom-tray" style="display: none;">
+                    <span>• <strong>Vasca Inferiore:</strong> <span id="txtBottomTray">Arancione</span></span>
+                    <div class="swatch-box" id="swatchBottomTray"></div>
+                </li>
+                <li id="detail-controller" style="display: none;">
+                    <span>• <strong>Contenitore Controller:</strong> <span id="txtController">Nero</span></span>
+                    <div class="swatch-box" id="swatchController"></div>
+                </li>
+                <li id="detail-dividers">
+                    <span>• <strong>Divisori Interni:</strong> <span id="txtDividers">Neri</span></span>
+                    <div class="swatch-box" id="swatchDividers"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- STEP 6: PERSONALIZZAZIONE GRATUITA DELLE MISURE -->
+    <div class="step-title">6. Personalizzazione gratuita delle misure</div>
+    <div class="switch-container" onclick="toggleSizeSwitch()">
+        <div class="switch-info">
+            <h3>Attiva Misure Personalizzate</h3>
+            <p>🎁 Gratis (+€0)</p>
+        </div>
+        <label class="toggle-switch" onclick="event.stopPropagation()">
+            <input type="checkbox" id="sizeToggle" onchange="onSizeToggleChange()">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="size-panel" id="sizePanel">
+        <div class="inputs-3col">
+            <div>
+                <label>Larghezza (mm)</label>
+                <input type="number" id="customW" placeholder="Max 300" max="300" oninput="validateWidth(this)">
+            </div>
+            <div>
+                <label>Altezza (mm)</label>
+                <input type="number" id="customH" placeholder="mm">
+            </div>
+            <div>
+                <label>Profondità (mm)</label>
+                <input type="number" id="customD" placeholder="mm">
+            </div>
+        </div>
+        <div class="size-note">⚠️ Nota: La larghezza massima consentita è di 300 mm per garantire la stabilità strutturale.</div>
+    </div>
+
+    <!-- STEP 7: PERSONALIZZAZIONI EXTRA -->
+    <div class="step-title">7. Personalizzazioni Extra</div>
+    <div class="input-group">
+        <label>Nome / Numero Pilota per Targhetta Custom (+ €15)</label>
+        <input type="text" id="custom-plate" placeholder="Es. Mario Rossi #42" oninput="updateTotal()">
+    </div>
+    <div class="input-group">
+        <label>Il tuo Nome e Cognome</label>
+        <input type="text" id="user-name" placeholder="Inserisci il tuo nome">
+    </div>
+
+    <div class="faq-accordion">
+        <div class="faq-header" onclick="toggleFaq()">
+            <span>🔧 Istruzioni Montaggio & Documenti</span>
+            <span id="faq-icon">▼</span>
+        </div>
+        <div class="faq-content" id="faq-content">
+            <div class="info-disclaimer-text">
+                • <strong>Difficoltà Montaggio:</strong> Semplice. Il Kit include tutte le viti, cerniere e istruzioni passo-passo.<br>
+                • <strong>Attrezzi necessari:</strong> Saldatore e chiave a brugola M3.<br>
+                • <strong>Ricambi Singoli:</strong> In caso di rottura di un componente durante le gare, è possibile riordinare esclusivamente il singolo pezzo senza dover riacquistare l'intera valigetta.
+            </div>
+            <div class="faq-links-group">
+                <a href="https://drive.google.com/file/d/1r3FTenfJgj4DgPZc8LFZhGay3nslI65d/view?usp=drive_link" class="faq-link" target="_blank">
+                    📄 Scarica Istruzioni di Montaggio (PDF)
+                </a>
+                <a href="https://drive.google.com/file/d/1xpbRP5zhkOc9aJwURRD5R1Vfua1JKHbs/view?usp=drive_link" class="faq-link" target="_blank">
+                    📊 Scarica Presentazione Prodotto (PDF)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-disclaimer-box">
+        <div class="info-disclaimer-section">
+            <div class="info-disclaimer-title">🚚 Spedizioni & Tempi:</div>
+            <ul class="info-disclaimer-list">
+                <li><strong>Pezzi in Stock (Pronta Consegna):</strong> Spedizione rapida entro <strong>24/48 ore</strong>.</li>
+                <li><strong>Su Ordinazione / Colori Custom:</strong> Evasione in <strong>10-15 giorni lavorativi</strong> (stampa e collaudo).</li>
+            </ul>
+            <div class="info-disclaimer-text" style="margin-top: 6px;">Spedizione tracciata tramite corriere espresso in tutta Italia.</div>
+        </div>
+        <div class="info-disclaimer-section" style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+            <div class="info-disclaimer-title">💳 Modalità di Pagamento:</div>
+            <div class="info-disclaimer-text">Il pagamento (PayPal / Bonifico) verrà concordato direttamente su WhatsApp dopo la conferma della disponibilità.</div>
+        </div>
+    </div>
+
+    <div class="bottom-bar">
+        <div class="total-price">
+            <span id="total-price-display">€ 179</span>
+            <span>Totale Stimato</span>
+        </div>
+        <button class="btn-whatsapp" onclick="sendWhatsApp()">
+            Ordina su WA 🚀
+        </button>
+    </div>
+
+    <script>
+        const MY_WHATSAPP_NUMBER = "393472412300"; 
+
+        const LIVERY_DATA = {
+            gulf: {
+                name: "Livrea Heritage Endurance (ex-Gulf)",
+                descBodyStarter: "Azzurro, Bianco e Arancione",
+                descBodyFull: "Azzurro e Bianco",
+                descHandle: "Nera",
+                descTopTray: "Arancione",
+                descBottomTray: "Arancione",
+                descController: "Nero",
+                descDividers: "Neri",
+                colorsStarter: { body: ["#38bdf8", "#ffffff", "#f97316"] },
+                colorsFull: { body: ["#38bdf8", "#ffffff"] },
+                colors: {
+                    handle: ["#1e293b"],
+                    topTray: ["#f97316"],
+                    bottomTray: ["#f97316"],
+                    controller: ["#1e293b"],
+                    dividers: ["#1e293b"]
+                }
+            },
+            martini: {
+                name: "Livrea Rally Classico (ex-Martini)",
+                descBodyStarter: "Bianco, Blu Navy e Rosso",
+                descBodyFull: "Bianco e Blu Navy",
+                descHandle: "Blu Navy",
+                descTopTray: "Rossa",
+                descBottomTray: "Rossa",
+                descController: "Rosso",
+                descDividers: "Gialli",
+                colorsStarter: { body: ["#ffffff", "#1e3a8a", "#ef4444"] },
+                colorsFull: { body: ["#ffffff", "#1e3a8a"] },
+                colors: {
+                    handle: ["#1e3a8a"],
+                    topTray: ["#ef4444"],
+                    bottomTray: ["#ef4444"],
+                    controller: ["#ef4444"],
+                    dividers: ["#eab308"]
+                }
+            },
+            jps: {
+                name: "Livrea Stealth Racing (ex-JPS)",
+                descBodyStarter: "Nero Satinato, Nero Matte e Giallo",
+                descBodyFull: "Nero Satinato e Nero Matte",
+                descHandle: "Gialla",
+                descTopTray: "Gialla",
+                descBottomTray: "Gialla",
+                descController: "Nero",
+                descDividers: "Neri",
+                colorsStarter: { body: ["#0f172a", "#334155", "#eab308"] },
+                colorsFull: { body: ["#0f172a", "#334155"] },
+                colors: {
+                    handle: ["#eab308"],
+                    topTray: ["#eab308"],
+                    bottomTray: ["#eab308"],
+                    controller: ["#0f172a"],
+                    dividers: ["#0f172a"]
+                }
+            },
+            corsa: {
+                name: "Livrea Competizione (Rosso Corsa)",
+                descBodyStarter: "Rosso Corsa, Nero e Bianco",
+                descBodyFull: "Rosso Corsa e Nero",
+                descHandle: "Rossa",
+                descTopTray: "Bianca",
+                descBottomTray: "Bianca",
+                descController: "Nero",
+                descDividers: "Rossi",
+                colorsStarter: { body: ["#ef4444", "#0f172a", "#ffffff"] },
+                colorsFull: { body: ["#ef4444", "#0f172a"] },
+                colors: {
+                    handle: ["#ef4444"],
+                    topTray: ["#ffffff"],
+                    bottomTray: ["#ffffff"],
+                    controller: ["#0f172a"],
+                    dividers: ["#ef4444"]
+                }
+            }
+        };
+        
+        let state = {
+            model: 'base', basePrice: 179, assembly: 'diy', assemblyPrice: 0,
+            colorMode: 'standard', colorModePrice: 0, selectedLivery: 'gulf',
+            customSizeActive: false,
+            dividers: { liscio: 1, slotcar: 1, attrezziOli: 1, gomme: 1 },
+            extras: { vascaExtra: false, portaSuperiore: false, boxController: false }
+        };
+        
+        function toggleFaq() {
+            const content = document.getElementById('faq-content');
+            const icon = document.getElementById('faq-icon');
+            if (content.style.display === 'block') { content.style.display = 'none'; icon.innerText = '▼'; }
+            else { content.style.display = 'block'; icon.innerText = '▲'; }
+        }
+
+        function changeDivider(type, delta) {
+            state.dividers[type] = Math.max(0, state.dividers[type] + delta);
+            document.getElementById(`count-${type}`).innerText = state.dividers[type];
+            updateDividersSummary();
+            updateTotal();
+        }
+
+        function getExtraDividersCount() {
+            const total = state.dividers.liscio + state.dividers.slotcar + state.dividers.attrezziOli + state.dividers.gomme;
+            return Math.max(0, total - 4);
+        }
+
+        function updateDividersSummary() {
+            const total = state.dividers.liscio + state.dividers.slotcar + state.dividers.attrezziOli + state.dividers.gomme;
+            document.getElementById('total-dividers-count').innerText = total;
+            const badge = document.getElementById('dividers-extra-cost-badge');
+            const extraCount = getExtraDividersCount();
+            if (extraCount > 0) { badge.innerText = `(${extraCount} Extra: +€${extraCount * 8})`; }
+            else { badge.innerText = `(Inclusi)`; }
+        }
+
+        function selectModel(modelType, price) {
+            state.model = modelType; state.basePrice = price;
+            document.getElementById('model-base').classList.remove('selected');
+            document.getElementById('model-full').classList.remove('selected');
+            document.getElementById(`model-${modelType}`).classList.add('selected');
+
+            updateExtraStates(); 
+            updateLiveryDetails(); 
+            updateTotal();
+        }
+
+        function toggleSizeSwitch() {
+            const toggle = document.getElementById('sizeToggle');
+            toggle.checked = !toggle.checked;
+            onSizeToggleChange();
+        }
+
+        function onSizeToggleChange() {
+            const toggle = document.getElementById('sizeToggle');
+            const panel = document.getElementById('sizePanel');
+            state.customSizeActive = toggle.checked;
+            panel.style.display = toggle.checked ? 'block' : 'none';
+        }
+
+        function validateWidth(input) {
+            if (parseInt(input.value) > 300) {
+                alert("La larghezza massima consentita è di 300 mm.");
+                input.value = 300;
+            }
+        }
+
+        function selectColorMode(mode, price) {
+            state.colorMode = mode; state.colorModePrice = price;
+            document.getElementById('colormode-standard').classList.remove('selected');
+            document.getElementById('colormode-custom').classList.remove('selected');
+            document.getElementById(`colormode-${mode}`).classList.add('selected');
+            const liveryContainer = document.getElementById('livery-select-container');
+            if (mode === 'custom') { 
+                liveryContainer.style.display = 'block'; 
+                onLiveryChange(document.getElementById('livery-select').value); 
+            } else { 
+                liveryContainer.style.display = 'none'; 
+            }
+            updateTotal();
+        }
+
+        function onLiveryChange(liveryKey) {
+            state.selectedLivery = liveryKey;
+            updateLiveryDetails(); 
+            updateTotal();
+        }
+
+        function createSwatches(containerId, colorHexArray) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            colorHexArray.forEach(hex => {
+                const span = document.createElement('span');
+                span.className = 'swatch-dot';
+                span.style.backgroundColor = hex;
+                container.appendChild(span);
+            });
+        }
+
+        function updateLiveryDetails() {
+            if (state.colorMode !== 'custom') return;
+            const data = LIVERY_DATA[state.selectedLivery];
+            document.getElementById('livery-details-box').style.display = 'block';
+            document.getElementById('livery-title').innerText = data.name;
+
+            if (state.model === 'base') {
+                document.getElementById('txtBody').innerText = data.descBodyStarter;
+                createSwatches('swatchBody', data.colorsStarter.body);
+            } else {
+                document.getElementById('txtBody').innerText = data.descBodyFull;
+                createSwatches('swatchBody', data.colorsFull.body);
+            }
+
+            document.getElementById('txtHandle').innerText = data.descHandle;
+            createSwatches('swatchHandle', data.colors.handle);
+
+            document.getElementById('txtDividers').innerText = data.descDividers;
+            createSwatches('swatchDividers', data.colors.dividers);
+
+            const hasTop = (state.model === 'full' || state.extras.portaSuperiore);
+            const hasBottom = (state.model === 'full' || state.extras.vascaExtra);
+            const hasController = (state.model === 'full' || state.extras.boxController);
+
+            document.getElementById('detail-top-tray').style.display = hasTop ? 'flex' : 'none';
+            if (hasTop) {
+                document.getElementById('txtTopTray').innerText = data.descTopTray;
+                createSwatches('swatchTopTray', data.colors.topTray);
+            }
+
+            document.getElementById('detail-bottom-tray').style.display = hasBottom ? 'flex' : 'none';
+            if (hasBottom) {
+                document.getElementById('txtBottomTray').innerText = data.descBottomTray;
+                createSwatches('swatchBottomTray', data.colors.bottomTray);
+            }
+
+            document.getElementById('detail-controller').style.display = hasController ? 'flex' : 'none';
+            if (hasController) {
+                document.getElementById('txtController').innerText = data.descController;
+                createSwatches('swatchController', data.colors.controller);
+            }
+        }
+
+        function selectAssembly(type, price) {
+            state.assembly = type; state.assemblyPrice = price;
+            document.getElementById('assembly-diy').classList.remove('selected');
+            document.getElementById('assembly-ready').classList.remove('selected');
+            document.getElementById(`assembly-${type}`).classList.add('selected');
+            updateTotal();
+        }
+
+        function updateExtraStates() {
+            const vascaCard = document.getElementById('extra-vasca');
+            const portaSupCard = document.getElementById('extra-porta-sup');
+            const boxCard = document.getElementById('extra-box');
+            const vascaBadge = document.getElementById('vasca-badge-container');
+            const portaSupBadge = document.getElementById('porta-sup-badge-container');
+            const boxBadge = document.getElementById('box-badge-container');
+
+            if (state.model === 'full') {
+                state.extras.vascaExtra = false; state.extras.portaSuperiore = false; state.extras.boxController = false;
+                vascaCard.classList.remove('selected'); vascaCard.classList.add('disabled');
+                vascaBadge.innerHTML = '<span class="badge-info">Inclusa nella versione Full</span>';
+                portaSupCard.classList.remove('selected'); portaSupCard.classList.add('disabled');
+                portaSupBadge.innerHTML = '<span class="badge-info">Inclusa nella versione Full</span>';
+                boxCard.classList.remove('selected'); boxCard.classList.add('disabled');
+                boxBadge.innerHTML = '<span class="badge-info">Incluso nella versione Full</span>';
+            } else {
+                vascaCard.classList.remove('disabled'); vascaBadge.innerHTML = '';
+                vascaCard.classList.toggle('selected', state.extras.vascaExtra);
+                portaSupCard.classList.remove('disabled'); portaSupBadge.innerHTML = '';
+                portaSupCard.classList.toggle('selected', state.extras.portaSuperiore);
+                if (!state.extras.portaSuperiore) {
+                    state.extras.boxController = false;
+                    boxCard.classList.remove('selected'); boxCard.classList.add('disabled');
+                    boxBadge.innerHTML = '<span class="badge-warning">Richiede Porta Superiore</span>';
+                } else {
+                    boxCard.classList.remove('disabled'); boxBadge.innerHTML = '';
+                    boxCard.classList.toggle('selected', state.extras.boxController);
+                }
+            }
+        }
+
+        function toggleExtra(extraKey, price) {
+            if (state.model === 'full') return;
+            if (extraKey === 'boxController' && !state.extras.portaSuperiore) return;
+            state.extras[extraKey] = !state.extras[extraKey];
+            if (extraKey === 'portaSuperiore' && !state.extras.portaSuperiore) { state.extras.boxController = false; }
+            updateExtraStates(); updateLiveryDetails(); updateTotal();
+        }
+
+        function calculateTotal() {
+            let total = state.basePrice + state.assemblyPrice;
+            if (state.model !== 'full') {
+                if (state.extras.vascaExtra) total += 45;
+                if (state.extras.portaSuperiore) total += 45;
+                if (state.extras.boxController) total += 25;
+            }
+            total += (getExtraDividersCount() * 8);
+            if (state.colorMode === 'custom') { total += 15; }
+            const plateInput = document.getElementById('custom-plate');
+            if (plateInput && plateInput.value.trim().length > 0) { total += 15; }
+            return total;
+        }
+
+        function updateTotal() {
+            const total = calculateTotal();
+            document.getElementById('total-price-display').innerText = `€ ${total}`;
+        }
+
+        function sendWhatsApp() {
+            const userName = document.getElementById('user-name').value.trim();
+            if (!userName) { alert("Inserisci il tuo nome per procedere!"); return; }
+            const modelName = state.model === 'base' ? 'Starter Pack' : 'Valigetta Full';
+            const assemblyName = state.assembly === 'diy' ? 'Kit da Montare (DIY)' : 'Ready-to-Race (Montata)';
+
+            let extrasList = [];
+            if (state.model === 'full') {
+                extrasList.push("Vasca Inferiore (Inclusa nella versione Full)");
+                extrasList.push("Porta Superiore (Inclusa nella versione Full)");
+                extrasList.push("Contenitore Controller (Incluso nella versione Full)");
+            } else {
+                if (state.extras.vascaExtra) extrasList.push("Vasca Inferiore (+45€)");
+                if (state.extras.portaSuperiore) extrasList.push("Porta Superiore (+45€)");
+                if (state.extras.boxController) extrasList.push("Contenitore Controller (+25€)");
+            }
+
+            let dividersDetail = [];
+            if (state.dividers.liscio > 0) dividersDetail.push(`${state.dividers.liscio} Multiuso/Liscio`);
+            if (state.dividers.slotcar > 0) dividersDetail.push(`${state.dividers.slotcar} Porta slotcar`);
+            if (state.dividers.attrezziOli > 0) dividersDetail.push(`${state.dividers.attrezziOli} Porta attrezzi / oli`);
+            if (state.dividers.gomme > 0) dividersDetail.push(`${state.dividers.gomme} Porta gomme`);
+
+            const extraCount = getExtraDividersCount();
+            const dividersText = dividersDetail.join(", ") + (extraCount > 0 ? ` (${extraCount} extra: +€${extraCount * 8})` : ' (Inclusi)');
+            extrasList.push(`Divisori scelti: ${dividersText}`);
+
+            const plate = document.getElementById('custom-plate').value.trim();
+            if (plate) { extrasList.push(`Targhetta Custom (+15€): "${plate}"`); }
+
+            const extrasText = extrasList.length > 0 ? extrasList.join(", ") : "Nessuno";
+
+            let colorsFormatted = "";
+            if (state.colorMode === 'custom') {
+                const data = LIVERY_DATA[state.selectedLivery];
+                const descBody = state.model === 'base' ? data.descBodyStarter : data.descBodyFull;
+                colorsFormatted = `🎨 *Livrea Racing Custom (+15€):* ${data.name}%0A` +
+                                  `   • Corpo e Porte: ${descBody}%0A` +
+                                  `   • Maniglia: ${data.descHandle}%0A` +
+                                  `   • Divisori: ${data.descDividers}`;
+                if (state.model === 'full' || state.extras.portaSuperiore) colorsFormatted += `%0A   • Porta Sup: ${data.descTopTray}`;
+                if (state.model === 'full' || state.extras.vascaExtra) colorsFormatted += `%0A   • Vasca Inf: ${data.descBottomTray}`;
+                if (state.model === 'full' || state.extras.boxController) colorsFormatted += `%0A   • Controller: ${data.descController}`;
+            } else {
+                colorsFormatted = `🎨 *Colori:* Standard / Random (Nero/Rosso)`;
+            }
+
+            let sizeFormatted = "";
+            if (state.customSizeActive) {
+                const w = document.getElementById('customW').value || 'Std';
+                const h = document.getElementById('customH').value || 'Std';
+                const d = document.getElementById('customD').value || 'Std';
+                sizeFormatted = `%0A📐 *Misure Custom (Gratuite):* ${w}L x ${d}P x ${h}H mm`;
+            } else {
+                const stdSize = state.model === 'full' ? '300L x 265P x 440H mm' : '300L x 265P x 300H mm';
+                sizeFormatted = `%0A📐 *Misure:* Standard (${stdSize})`;
+            }
+
+            const total = calculateTotal();
+            const message = `Ciao! Sono ${userName}. Ho appena configurato la mia *Modular Slotcar Case*:%0A%0A` +
+                            `📦 *Modello:* ${modelName}%0A` +
+                            `🛠️ *Montaggio:* ${assemblyName}%0A` +
+                            `${sizeFormatted}%0A%0A` +
+                            `${colorsFormatted}%0A%0A` +
+                            `➕ *Extra & Accessori:* ${extrasText}%0A%0A` +
+                            `💰 *Totale Calcolato:* € ${total}%0A%0A` +
+                            `Mi confermi la disponibilità per procedere con l'ordine?`;
+            window.open(`https://wa.me/${MY_WHATSAPP_NUMBER}?text=${message}`, '_blank');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateExtraStates(); updateDividersSummary(); updateTotal();
+        });
+    </script>
+</body>
+</html>
