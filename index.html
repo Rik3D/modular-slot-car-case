@@ -667,7 +667,7 @@
             document.getElementById('total-price-display').innerText = `€ ${total}`;
         }
 
-        function sendWhatsApp() {
+     function sendWhatsApp() {
             const userName = document.getElementById('user-name').value.trim();
             if (!userName) { alert("Inserisci il tuo nome per procedere!"); return; }
             const modelName = state.model === 'base' ? 'Starter Pack' : 'Valigetta Full';
@@ -703,7 +703,7 @@
             if (state.colorMode === 'custom') {
                 const data = LIVERY_DATA[state.selectedLivery];
                 const descBody = state.model === 'base' ? data.descBodyStarter : data.descBodyFull;
-                colorsFormatted = `🎨 *Livrea Racing Custom (+15€):* ${data.name}%0A` +
+                colorsFormatted = `%F0%9F%8E%A8 *Livrea Racing Custom (+15€):* ${data.name}%0A` +
                                   `   • Corpo e Porte: ${descBody}%0A` +
                                   `   • Maniglia: ${data.descHandle}%0A` +
                                   `   • Divisori: ${data.descDividers}`;
@@ -711,7 +711,7 @@
                 if (state.model === 'full' || state.extras.vascaExtra) colorsFormatted += `%0A   • Vasca Inf: ${data.descBottomTray}`;
                 if (state.model === 'full' || state.extras.boxController) colorsFormatted += `%0A   • Controller: ${data.descController}`;
             } else {
-                colorsFormatted = `🎨 *Colori:* Standard / Random (Nero/Rosso)`;
+                colorsFormatted = `%F0%9F%8E%A8 *Colori:* Standard / Random (Nero/Rosso)`;
             }
 
             let sizeFormatted = "";
@@ -719,20 +719,20 @@
                 const w = document.getElementById('customW').value || 'Std';
                 const h = document.getElementById('customH').value || 'Std';
                 const d = document.getElementById('customD').value || 'Std';
-                sizeFormatted = `%0A📐 *Misure Custom (Gratuite):* ${w}L x ${d}P x ${h}H mm`;
+                sizeFormatted = `%0A%F0%9F%93%90 *Misure Custom (Gratuite):* ${w}L x ${d}P x ${h}H mm`;
             } else {
                 const stdSize = state.model === 'full' ? '300L x 265P x 440H mm' : '300L x 265P x 300H mm';
-                sizeFormatted = `%0A📐 *Misure:* Standard (${stdSize})`;
+                sizeFormatted = `%0A%F0%9F%93%90 *Misure:* Standard (${stdSize})`;
             }
 
             const total = calculateTotal();
             const message = `Ciao! Sono ${userName}. Ho appena configurato la mia *Modular Slotcar Case*:%0A%0A` +
-                            `📦 *Modello:* ${modelName}%0A` +
-                            `🛠️ *Montaggio:* ${assemblyName}%0A` +
+                            `%F0%9F%93%A6 *Modello:* ${modelName}%0A` +
+                            `%F0%9F%90%A0 *Montaggio:* ${assemblyName}%0A` +
                             `${sizeFormatted}%0A%0A` +
                             `${colorsFormatted}%0A%0A` +
-                            `➕ *Extra & Accessori:* ${extrasText}%0A%0A` +
-                            `💰 *Totale Calcolato:* € ${total}%0A%0A` +
+                            `%E2%9E%95 *Extra & Accessori:* ${extrasText}%0A%0A` +
+                            `%F0%9F%92%B0 *Totale Calcolato:* € ${total}%0A%0A` +
                             `Mi confermi la disponibilità per procedere con l'ordine?`;
             window.open(`https://wa.me/${MY_WHATSAPP_NUMBER}?text=${message}`, '_blank');
         }
