@@ -649,18 +649,33 @@
         }
 
         function calculateTotal() {
-            let total = state.basePrice + state.assemblyPrice;
-            if (state.model !== 'full') {
-                if (state.extras.vascaExtra) total += 45;
-                if (state.extras.portaSuperiore) total += 45;
-                if (state.extras.boxController) total += 25;
-            }
-            total += (getExtraDividersCount() * 8);
-            if (state.colorMode === 'custom') { total += 15; }
-            const plateInput = document.getElementById('custom-plate');
-            if (plateInput && plateInput.value.trim().length > 0) { total += 15; }
-            return total;
-        }
+    let total = state.model === 'base' ? 179 : 289; //
+    
+    if (state.assembly === 'montata') total += 69; //[cite: 1]
+    
+    // Extras per la base
+    if (state.model === 'base') {
+        if (state.extras.vascaExtra) total += 45; //[cite: 1]
+        if (state.extras.portaSuperiore) total += 45; //[cite: 1]
+        if (state.extras.boxController) total += 25; //[cite: 1]
+    }
+    
+    // Livrea Custom
+    if (state.colorMode === 'custom') total += 15; //[cite: 1]
+    
+    // Divisori extra
+    const extraDividers = getExtraDividersCount();
+    if (extraDividers > 0) total += extraDividers * 8; //[cite: 1]
+    
+    // Targhetta Custom (+15€)
+    const plateInput = document.getElementById('custom-plate');
+    const plateText = plateInput ? plateInput.value.trim() : '';
+    if (state.hasCustomPlate || plateText.length > 0) {
+        total += 15; //[cite: 1]
+    }
+    
+    return total;
+}
 
         function updateTotal() {
             const total = calculateTotal();
@@ -670,32 +685,36 @@
      function sendWhatsApp() {
             const userName = document.getElementById('user-name').value.trim();
             if (!userName) { alert("Inserisci il tuo nome per procedere!"); return; }
-            const modelName = state.model === 'base' ? 'Starter Pack' : 'Valigetta Full';
-            const assemblyName = state.assembly === 'diy' ? 'Kit da Montare (DIY)' : 'Ready-to-Race (Montata)';
+            const modelName = state.model === 'base' ? 'Starter Pack' : 'Valigetta Full'; //[cite: 1]
+            const assemblyName = state.assembly === 'diy' ? 'Kit da Montare (DIY)' : 'Ready-to-Race (Montata)'; //[cite: 1]
 
             let extrasList = [];
             if (state.model === 'full') {
-                extrasList.push("Vasca Inferiore (Inclusa nella versione Full)");
-                extrasList.push("Porta Superiore (Inclusa nella versione Full)");
-                extrasList.push("Contenitore Controller (Incluso nella versione Full)");
+                extrasList.push("Vasca Inferiore (Inclusa nella versione Full)"); //[cite: 1]
+                extrasList.push("Porta Superiore (Inclusa nella versione Full)"); //[cite: 1]
+                extrasList.push("Contenitore Controller (Incluso nella versione Full)"); //[cite: 1]
             } else {
-                if (state.extras.vascaExtra) extrasList.push("Vasca Inferiore (+45€)");
-                if (state.extras.portaSuperiore) extrasList.push("Porta Superiore (+45€)");
-                if (state.extras.boxController) extrasList.push("Contenitore Controller (+25€)");
+                if (state.extras.vascaExtra) extrasList.push("Vasca Inferiore (+45€)"); //[cite: 1]
+                if (state.extras.portaSuperiore) extrasList.push("Porta Superiore (+45€)"); //[cite: 1]
+                if (state.extras.boxController) extrasList.push("Contenitore Controller (+25€)"); //[cite: 1]
             }
 
             let dividersDetail = [];
-            if (state.dividers.liscio > 0) dividersDetail.push(`${state.dividers.liscio} Multiuso/Liscio`);
-            if (state.dividers.slotcar > 0) dividersDetail.push(`${state.dividers.slotcar} Porta slotcar`);
-            if (state.dividers.attrezziOli > 0) dividersDetail.push(`${state.dividers.attrezziOli} Porta attrezzi / oli`);
-            if (state.dividers.gomme > 0) dividersDetail.push(`${state.dividers.gomme} Porta gomme`);
+            if (state.dividers.liscio > 0) dividersDetail.push(`${state.dividers.liscio} Multiuso/Liscio`); //[cite: 1]
+            if (state.dividers.slotcar > 0) dividersDetail.push(`${state.dividers.slotcar} Porta slotcar`); //[cite: 1]
+            if (state.dividers.attrezziOli > 0) dividersDetail.push(`${state.dividers.attrezziOli} Porta attrezzi / oli`); //[cite: 1]
+            if (state.dividers.gomme > 0) dividersDetail.push(`${state.dividers.gomme} Porta gomme`); //[cite: 1]
 
             const extraCount = getExtraDividersCount();
-            const dividersText = dividersDetail.join(", ") + (extraCount > 0 ? ` (${extraCount} extra: +€${extraCount * 8})` : ' (Inclusi)');
+            const dividersText = dividersDetail.join(", ") + (extraCount > 0 ? ` (${extraCount} extra: +€${extraCount * 8})` : ' (Inclusi)'); //[cite: 1]
             extrasList.push(`Divisori scelti: ${dividersText}`);
 
-            const plate = document.getElementById('custom-plate').value.trim();
-            if (plate) { extrasList.push(`Targhetta Custom (+15€): "${plate}"`); }
+            // Gestione Targhetta Custom con Nome e Numero
+            const plateInput = document.getElementById('custom-plate');
+            const plateValue = plateInput ? plateInput.value.trim() : '';
+            if (plateValue) {
+                extrasList.push(`Targhetta Custom Nome/Numero (+15€): "${plateValue}"`); //[cite: 1]
+            }
 
             const extrasText = extrasList.length > 0 ? extrasList.join("\n   • ") : "Nessuno";
 
@@ -703,15 +722,15 @@
             if (state.colorMode === 'custom') {
                 const data = LIVERY_DATA[state.selectedLivery];
                 const descBody = state.model === 'base' ? data.descBodyStarter : data.descBodyFull;
-                colorsFormatted = `🎨 *Livrea Racing Custom (+15€):* ${data.name}\n` +
-                                  `   • Corpo e Porte: ${descBody}\n` +
-                                  `   • Maniglia: ${data.descHandle}\n` +
-                                  `   • Divisori: ${data.descDividers}`;
-                if (state.model === 'full' || state.extras.portaSuperiore) colorsFormatted += `\n   • Porta Sup: ${data.descTopTray}`;
-                if (state.model === 'full' || state.extras.vascaExtra) colorsFormatted += `\n   • Vasca Inf: ${data.descBottomTray}`;
-                if (state.model === 'full' || state.extras.boxController) colorsFormatted += `\n   • Controller: ${data.descController}`;
+                colorsFormatted = `🎨 *Livrea Racing Custom (+15€):* ${data.name}\n` + //[cite: 1]
+                                  `   • Corpo e Porte: ${descBody}\n` + //[cite: 1]
+                                  `   • Maniglia: ${data.descHandle}\n` + //[cite: 1]
+                                  `   • Divisori: ${data.descDividers}`; //[cite: 1]
+                if (state.model === 'full' || state.extras.portaSuperiore) colorsFormatted += `\n   • Porta Sup: ${data.descTopTray}`; //[cite: 1]
+                if (state.model === 'full' || state.extras.vascaExtra) colorsFormatted += `\n   • Vasca Inf: ${data.descBottomTray}`; //[cite: 1]
+                if (state.model === 'full' || state.extras.boxController) colorsFormatted += `\n   • Controller: ${data.descController}`; //[cite: 1]
             } else {
-                colorsFormatted = `🎨 *Colori:* Standard / Random (Nero/Rosso)`;
+                colorsFormatted = `🎨 *Colori:* Standard / Random (Nero/Rosso)`; //[cite: 1]
             }
 
             let sizeFormatted = "";
@@ -719,10 +738,10 @@
                 const w = document.getElementById('customW').value || 'Std';
                 const h = document.getElementById('customH').value || 'Std';
                 const d = document.getElementById('customD').value || 'Std';
-                sizeFormatted = `📐 *Misure Custom (Gratuite):* ${w}L x ${d}P x ${h}H mm`;
+                sizeFormatted = `📐 *Misure Custom (Gratuite):* ${w}L x ${d}P x ${h}H mm`; //[cite: 1]
             } else {
-                const stdSize = state.model === 'full' ? '300L x 265P x 440H mm' : '300L x 265P x 300H mm';
-                sizeFormatted = `📐 *Misure:* Standard (${stdSize})`;
+                const stdSize = state.model === 'full' ? '300L x 265P x 440H mm' : '300L x 265P x 300H mm'; //[cite: 1]
+                sizeFormatted = `📐 *Misure:* Standard (${stdSize})`; //[cite: 1]
             }
 
             const total = calculateTotal();
