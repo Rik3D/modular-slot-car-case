@@ -697,19 +697,19 @@
             const plate = document.getElementById('custom-plate').value.trim();
             if (plate) { extrasList.push(`Targhetta Custom (+15€): "${plate}"`); }
 
-            const extrasText = extrasList.length > 0 ? extrasList.join(", ") : "Nessuno";
+            const extrasText = extrasList.length > 0 ? extrasList.join("\n   • ") : "Nessuno";
 
             let colorsFormatted = "";
             if (state.colorMode === 'custom') {
                 const data = LIVERY_DATA[state.selectedLivery];
                 const descBody = state.model === 'base' ? data.descBodyStarter : data.descBodyFull;
-                colorsFormatted = `🎨 *Livrea Racing Custom (+15€):* ${data.name}%0A` +
-                                  `   • Corpo e Porte: ${descBody}%0A` +
-                                  `   • Maniglia: ${data.descHandle}%0A` +
+                colorsFormatted = `🎨 *Livrea Racing Custom (+15€):* ${data.name}\n` +
+                                  `   • Corpo e Porte: ${descBody}\n` +
+                                  `   • Maniglia: ${data.descHandle}\n` +
                                   `   • Divisori: ${data.descDividers}`;
-                if (state.model === 'full' || state.extras.portaSuperiore) colorsFormatted += `%0A   • Porta Sup: ${data.descTopTray}`;
-                if (state.model === 'full' || state.extras.vascaExtra) colorsFormatted += `%0A   • Vasca Inf: ${data.descBottomTray}`;
-                if (state.model === 'full' || state.extras.boxController) colorsFormatted += `%0A   • Controller: ${data.descController}`;
+                if (state.model === 'full' || state.extras.portaSuperiore) colorsFormatted += `\n   • Porta Sup: ${data.descTopTray}`;
+                if (state.model === 'full' || state.extras.vascaExtra) colorsFormatted += `\n   • Vasca Inf: ${data.descBottomTray}`;
+                if (state.model === 'full' || state.extras.boxController) colorsFormatted += `\n   • Controller: ${data.descController}`;
             } else {
                 colorsFormatted = `🎨 *Colori:* Standard / Random (Nero/Rosso)`;
             }
@@ -719,22 +719,24 @@
                 const w = document.getElementById('customW').value || 'Std';
                 const h = document.getElementById('customH').value || 'Std';
                 const d = document.getElementById('customD').value || 'Std';
-                sizeFormatted = `%0A📐 *Misure Custom (Gratuite):* ${w}L x ${d}P x ${h}H mm`;
+                sizeFormatted = `📐 *Misure Custom (Gratuite):* ${w}L x ${d}P x ${h}H mm`;
             } else {
                 const stdSize = state.model === 'full' ? '300L x 265P x 440H mm' : '300L x 265P x 300H mm';
-                sizeFormatted = `%0A📐 *Misure:* Standard (${stdSize})`;
+                sizeFormatted = `📐 *Misure:* Standard (${stdSize})`;
             }
 
             const total = calculateTotal();
-            const message = `Ciao! Sono ${userName}. Ho appena configurato la mia *Modular Slotcar Case*:%0A%0A` +
-                            `📦 *Modello:* ${modelName}%0A` +
-                            `🛠️ *Montaggio:* ${assemblyName}%0A` +
-                            `${sizeFormatted}%0A%0A` +
-                            `${colorsFormatted}%0A%0A` +
-                            `➕ *Extra & Accessori:* ${extrasText}%0A%0A` +
-                            `💰 *Totale Calcolato:* € ${total}%0A%0A` +
-                            `Mi confermi la disponibilità per procedere con l'ordine?`;
-            window.open(`https://wa.me/${MY_WHATSAPP_NUMBER}?text=${message}`, '_blank');
+            const messageText = `Ciao! Sono ${userName}. Ho appena configurato la mia *Modular Slotcar Case*:\n\n` +
+                                `📦 *Modello:* ${modelName}\n` +
+                                `🚀 *Montaggio:* ${assemblyName}\n` +
+                                `${sizeFormatted}\n\n` +
+                                `${colorsFormatted}\n\n` +
+                                `➕ *Extra & Accessori:*\n   • ${extrasText}\n\n` +
+                                `💰 *TOTALE CALCOLATO:* € ${total}\n\n` +
+                                `Mi confermi la disponibilità per procedere con l'ordine?`;
+
+            const fullUrl = "https://api.whatsapp.com/send?phone=" + MY_WHATSAPP_NUMBER + "&text=" + encodeURIComponent(messageText);
+            window.open(fullUrl, '_blank');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
