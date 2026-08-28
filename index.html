@@ -54,6 +54,8 @@
         .input-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
         .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: white; font-size: 0.95rem; }
 
+        .promo-feedback { margin-top: 6px; font-size: 0.8rem; font-weight: 600; display: none; }
+
         /* Step 6 Switch & Custom Size */
         .switch-container { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 10px; padding: 15px; cursor: pointer; }
         .switch-info h3 { font-size: 0.95rem; margin-bottom: 3px; }
@@ -129,7 +131,7 @@
         <div class="card-option" onclick="selectModel('full', 289)" id="model-full">
             <h3>Valigetta Full</h3>
             <div class="price">Da €289</div>
-            <div class="desc">Starter Pack + Porta Superiore + Vasca Inferiore + Contenitore Controller.</div>
+            <div class="desc">Starter Pack + Porta Superiore + Vasca Inferiore + Contenitore Controller + Organizzatore scomparti.</div>
             <span class="badge-size">📐 300L x 265P x 440H mm</span>
         </div>
     </div>
@@ -213,19 +215,24 @@
     <!-- STEP 4: EXTRA -->
     <div class="step-title">4. Moduli Extra & Accessori</div>
     <div class="grid-options grid-full">
-        <div class="card-option" id="extra-vasca" onclick="toggleExtra('vascaExtra', 45)">
-            <h3>Vasca Inferiore (+ €45)</h3>
-            <div class="desc">Modulo extra inferiore per ulteriori accessori.</div>
+        <div class="card-option" id="extra-vasca" onclick="toggleExtra('vascaExtra', 35)">
+            <h3>Vasca Inferiore (+ €35)</h3>
+            <div class="desc">Modulo extra inferiore per ulteriore stivaggio.</div>
             <div id="vasca-badge-container"></div>
         </div>
-        <div class="card-option" id="extra-porta-sup" onclick="toggleExtra('portaSuperiore', 45)">
-            <h3>Porta Superiore (+ €45)</h3>
+        <div class="card-option" id="extra-organizzatore" onclick="toggleExtra('organizzatoreScomparti', 25)">
+            <h3>Organizzatore scomparti (+ €25)</h3>
+            <div class="desc">Divisori per organizzare la vasca inferiore.</div>
+            <div id="organizzatore-badge-container"></div>
+        </div>
+        <div class="card-option" id="extra-porta-sup" onclick="toggleExtra('portaSuperiore', 35)">
+            <h3>Porta Superiore (+ €35)</h3>
             <div class="desc">Modulo per la parte superiore della valigetta.</div>
             <div id="porta-sup-badge-container"></div>
         </div>
         <div class="card-option" id="extra-box" onclick="toggleExtra('boxController', 25)">
             <h3>Contenitore Controller (+ €25)</h3>
-            <div class="desc">Contenitore protettivo per il tuo pulsante da gara.</div>
+            <div class="desc">Contenitore protettivo per il tuo pulsante.</div>
             <div id="box-badge-container"></div>
         </div>
     </div>
@@ -324,6 +331,15 @@
         <label>Nome / Numero Pilota per Targhetta Custom (+ €15)</label>
         <input type="text" id="custom-plate" placeholder="Es. Mario Rossi #42" oninput="updateTotal()">
     </div>
+
+    <!-- STEP 8: CODICE SCONTO / PROMO CODE -->
+    <div class="step-title">8. Codice Sconto</div>
+    <div class="input-group">
+        <label>Hai un Codice Promo?</label>
+        <input type="text" id="promo-code" placeholder="Inserisci il codice sconto" oninput="updateTotal()">
+        <div id="promo-feedback" class="promo-feedback"></div>
+    </div>
+
     <div class="input-group">
         <label>Il tuo Nome e Cognome</label>
         <input type="text" id="user-name" placeholder="Inserisci il tuo nome">
@@ -463,7 +479,7 @@
             colorMode: 'standard', colorModePrice: 0, selectedLivery: 'gulf',
             customSizeActive: false,
             dividers: { liscio: 1, slotcar: 1, attrezziOli: 1, gomme: 1 },
-            extras: { vascaExtra: false, portaSuperiore: false, boxController: false }
+            extras: { vascaExtra: false, organizzatoreScomparti: false, portaSuperiore: false, boxController: false }
         };
         
         function toggleFaq() {
@@ -610,25 +626,48 @@
 
         function updateExtraStates() {
             const vascaCard = document.getElementById('extra-vasca');
+            const orgCard = document.getElementById('extra-organizzatore');
             const portaSupCard = document.getElementById('extra-porta-sup');
             const boxCard = document.getElementById('extra-box');
+            
             const vascaBadge = document.getElementById('vasca-badge-container');
+            const orgBadge = document.getElementById('organizzatore-badge-container');
             const portaSupBadge = document.getElementById('porta-sup-badge-container');
             const boxBadge = document.getElementById('box-badge-container');
 
             if (state.model === 'full') {
-                state.extras.vascaExtra = false; state.extras.portaSuperiore = false; state.extras.boxController = false;
+                state.extras.vascaExtra = false; 
+                state.extras.organizzatoreScomparti = false;
+                state.extras.portaSuperiore = false; 
+                state.extras.boxController = false;
+
                 vascaCard.classList.remove('selected'); vascaCard.classList.add('disabled');
                 vascaBadge.innerHTML = '<span class="badge-info">Inclusa nella versione Full</span>';
+                
+                orgCard.classList.remove('selected'); orgCard.classList.add('disabled');
+                orgBadge.innerHTML = '<span class="badge-info">Incluso nella versione Full</span>';
+
                 portaSupCard.classList.remove('selected'); portaSupCard.classList.add('disabled');
                 portaSupBadge.innerHTML = '<span class="badge-info">Inclusa nella versione Full</span>';
+                
                 boxCard.classList.remove('selected'); boxCard.classList.add('disabled');
                 boxBadge.innerHTML = '<span class="badge-info">Incluso nella versione Full</span>';
             } else {
                 vascaCard.classList.remove('disabled'); vascaBadge.innerHTML = '';
                 vascaCard.classList.toggle('selected', state.extras.vascaExtra);
+
+                if (!state.extras.vascaExtra) {
+                    state.extras.organizzatoreScomparti = false;
+                    orgCard.classList.remove('selected'); orgCard.classList.add('disabled');
+                    orgBadge.innerHTML = '<span class="badge-warning">Richiede Vasca Inferiore</span>';
+                } else {
+                    orgCard.classList.remove('disabled'); orgBadge.innerHTML = '';
+                    orgCard.classList.toggle('selected', state.extras.organizzatoreScomparti);
+                }
+
                 portaSupCard.classList.remove('disabled'); portaSupBadge.innerHTML = '';
                 portaSupCard.classList.toggle('selected', state.extras.portaSuperiore);
+
                 if (!state.extras.portaSuperiore) {
                     state.extras.boxController = false;
                     boxCard.classList.remove('selected'); boxCard.classList.add('disabled');
@@ -642,23 +681,70 @@
 
         function toggleExtra(extraKey, price) {
             if (state.model === 'full') return;
+            if (extraKey === 'organizzatoreScomparti' && !state.extras.vascaExtra) return;
             if (extraKey === 'boxController' && !state.extras.portaSuperiore) return;
+
             state.extras[extraKey] = !state.extras[extraKey];
-            if (extraKey === 'portaSuperiore' && !state.extras.portaSuperiore) { state.extras.boxController = false; }
+
+            if (extraKey === 'vascaExtra' && !state.extras.vascaExtra) {
+                state.extras.organizzatoreScomparti = false;
+            }
+            if (extraKey === 'portaSuperiore' && !state.extras.portaSuperiore) {
+                state.extras.boxController = false;
+            }
+
             updateExtraStates(); updateLiveryDetails(); updateTotal();
         }
 
         function calculateTotal() {
             let total = state.basePrice + state.assemblyPrice;
             if (state.model !== 'full') {
-                if (state.extras.vascaExtra) total += 45;
-                if (state.extras.portaSuperiore) total += 45;
+                if (state.extras.vascaExtra) total += 35;
+                if (state.extras.organizzatoreScomparti) total += 25;
+                if (state.extras.portaSuperiore) total += 35;
                 if (state.extras.boxController) total += 25;
             }
             total += (getExtraDividersCount() * 8);
-            if (state.colorMode === 'custom') { total += 15; }
+
+            // Calcolo extra custom
+            let liveryCost = (state.colorMode === 'custom') ? 15 : 0;
             const plateInput = document.getElementById('custom-plate');
-            if (plateInput && plateInput.value.trim().length > 0) { total += 15; }
+            let plateCost = (plateInput && plateInput.value.trim().length > 0) ? 15 : 0;
+
+            // Logica Codice Promo con Data di Scadenza (30 Settembre 2026)
+            const promoInput = document.getElementById('promo-code');
+            const promoFeedback = document.getElementById('promo-feedback');
+            const promoVal = promoInput ? promoInput.value.trim().toLowerCase() : '';
+
+            const currentDate = new Date();
+            const expirationDate = new Date('2026-09-30T23:59:59');
+
+            if (promoVal === 'free custom') {
+                if (currentDate <= expirationDate) {
+                    let savedAmount = liveryCost + plateCost;
+                    if (savedAmount > 0) {
+                        promoFeedback.innerText = `🎁 Codice applicato! Sconto di €${savedAmount} su Personalizzazioni Custom.`;
+                        promoFeedback.style.color = '#22c55e';
+                    } else {
+                        promoFeedback.innerText = `🎁 Codice "free custom" attivo! Seleziona la Livrea Custom o la Targhetta per applicare lo sconto.`;
+                        promoFeedback.style.color = '#38bdf8';
+                    }
+                } else {
+                    promoFeedback.innerText = `❌ Il codice promo "free custom" è scaduto il 30/09/2026.`;
+                    promoFeedback.style.color = '#ef4444';
+                    total += liveryCost + plateCost;
+                }
+                promoFeedback.style.display = 'block';
+            } else if (promoVal.length > 0) {
+                promoFeedback.innerText = `❌ Codice sconto non valido.`;
+                promoFeedback.style.color = '#ef4444';
+                promoFeedback.style.display = 'block';
+                total += liveryCost + plateCost;
+            } else {
+                if (promoFeedback) promoFeedback.style.display = 'none';
+                total += liveryCost + plateCost;
+            }
+
             return total;
         }
 
@@ -673,14 +759,22 @@
             const modelName = state.model === 'base' ? 'Starter Pack' : 'Valigetta Full';
             const assemblyName = state.assembly === 'diy' ? 'Kit da Montare (DIY)' : 'Ready-to-Race (Montata)';
 
+            const promoInput = document.getElementById('promo-code');
+            const promoVal = promoInput ? promoInput.value.trim().toLowerCase() : '';
+            const currentDate = new Date();
+            const expirationDate = new Date('2026-09-30T23:59:59');
+            const isPromoActive = (promoVal === 'free custom' && currentDate <= expirationDate);
+
             let extrasList = [];
             if (state.model === 'full') {
                 extrasList.push("Vasca Inferiore (Inclusa nella versione Full)");
+                extrasList.push("Organizzatore scomparti (Incluso nella versione Full)");
                 extrasList.push("Porta Superiore (Inclusa nella versione Full)");
                 extrasList.push("Contenitore Controller (Incluso nella versione Full)");
             } else {
-                if (state.extras.vascaExtra) extrasList.push("Vasca Inferiore (+45€)");
-                if (state.extras.portaSuperiore) extrasList.push("Porta Superiore (+45€)");
+                if (state.extras.vascaExtra) extrasList.push("Vasca Inferiore (+35€)");
+                if (state.extras.organizzatoreScomparti) extrasList.push("Organizzatore scomparti (+25€)");
+                if (state.extras.portaSuperiore) extrasList.push("Porta Superiore (+35€)");
                 if (state.extras.boxController) extrasList.push("Contenitore Controller (+25€)");
             }
 
@@ -695,7 +789,10 @@
             extrasList.push(`Divisori scelti: ${dividersText}`);
 
             const plate = document.getElementById('custom-plate').value.trim();
-            if (plate) { extrasList.push(`Targhetta Custom (+15€): "${plate}"`); }
+            if (plate) { 
+                const plateText = isPromoActive ? `Targhetta Custom (GRATIS promo): "${plate}"` : `Targhetta Custom (+15€): "${plate}"`;
+                extrasList.push(plateText); 
+            }
 
             const extrasText = extrasList.length > 0 ? extrasList.join("\n   • ") : "Nessuno";
 
@@ -703,7 +800,8 @@
             if (state.colorMode === 'custom') {
                 const data = LIVERY_DATA[state.selectedLivery];
                 const descBody = state.model === 'base' ? data.descBodyStarter : data.descBodyFull;
-                colorsFormatted = `🎨 *Livrea Racing Custom (+15€):* ${data.name}\n` +
+                const liveryTag = isPromoActive ? "Livrea Racing Custom (GRATIS promo)" : "Livrea Racing Custom (+15€)";
+                colorsFormatted = `🎨 *${liveryTag}:* ${data.name}\n` +
                                   `   • Corpo e Porte: ${descBody}\n` +
                                   `   • Maniglia: ${data.descHandle}\n` +
                                   `   • Divisori: ${data.descDividers}`;
@@ -725,6 +823,8 @@
                 sizeFormatted = `📐 *Misure:* Standard (${stdSize})`;
             }
 
+            let promoText = isPromoActive ? `🎟️ *Codice Promo:* FREE CUSTOM (Personalizzazioni GRATIS)\n` : "";
+
             const total = calculateTotal();
             const messageText = `Ciao! Sono ${userName}. Ho appena configurato la mia *Modular Slotcar Case*:\n\n` +
                                 `📦 *Modello:* ${modelName}\n` +
@@ -732,6 +832,7 @@
                                 `${sizeFormatted}\n\n` +
                                 `${colorsFormatted}\n\n` +
                                 `➕ *Extra & Accessori:*\n   • ${extrasText}\n\n` +
+                                `${promoText}` +
                                 `💰 *TOTALE CALCOLATO:* € ${total}\n\n` +
                                 `Mi confermi la disponibilità per procedere con l'ordine?`;
 
