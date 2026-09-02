@@ -345,6 +345,11 @@
         <input type="text" id="user-name" placeholder="Inserisci il tuo nome">
     </div>
 
+    <div class="input-group">
+        <label>La tua Email (per aggiornamenti e comunicazioni)</label>
+        <input type="email" id="user-email" placeholder="Es. mario.rossi@email.com">
+    </div>
+
     <div class="faq-accordion">
         <div class="faq-header" onclick="toggleFaq()">
             <span>🔧 Istruzioni Montaggio & Documenti</span>
@@ -756,6 +761,8 @@
         function sendWhatsApp() {
             const userName = document.getElementById('user-name').value.trim();
             if (!userName) { alert("Inserisci il tuo nome per procedere!"); return; }
+            const userEmail = document.getElementById('user-email').value.trim();
+
             const modelName = state.model === 'base' ? 'Starter Pack' : 'Valigetta Full';
             const assemblyName = state.assembly === 'diy' ? 'Kit da Montare (DIY)' : 'Ready-to-Race (Montata)';
 
@@ -824,9 +831,12 @@
             }
 
             let promoText = isPromoActive ? `🎟️ *Codice Promo:* FREE CUSTOM (Personalizzazioni GRATIS)\n` : "";
+            let emailText = userEmail ? `✉️ *Email:* ${userEmail}\n` : "";
 
             const total = calculateTotal();
-            const messageText = `Ciao! Sono ${userName}. Ho appena configurato la mia *Modular Slotcar Case*:\n\n` +
+            const messageText = `Ciao! Sono ${userName}.\n` +
+                                `${emailText}` +
+                                `Ho appena configurato la mia *Modular Slotcar Case*:\n\n` +
                                 `📦 *Modello:* ${modelName}\n` +
                                 `🚀 *Montaggio:* ${assemblyName}\n` +
                                 `${sizeFormatted}\n\n` +
