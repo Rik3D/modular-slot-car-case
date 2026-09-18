@@ -1113,7 +1113,7 @@
             document.getElementById('total-price-display').innerText = `€ ${total}`;
         }
 
-        function sendWhatsApp() {
+      function sendWhatsApp() {
             const userName = document.getElementById('user-name').value.trim();
             const userEmail = document.getElementById('user-email').value.trim();
             const t = I18N[currentLang];
@@ -1121,10 +1121,7 @@
 
             if (!userName) { alert(t.alertName); return; }
 
-            const modelName = state.model === 'base' ? 
-                (isEn ? 'Starter Pack' : 'Starter Pack') : 
-                (isEn ? 'Full Modular Case' : 'Valigetta Full');
-
+            const modelName = state.model === 'base' ? 'Starter Pack' : (isEn ? 'Full Modular Case' : 'Valigetta Full');
             const assemblyName = state.assembly === 'diy' ? 
                 (isEn ? 'DIY Kit (+€0)' : 'Kit da Montare (DIY +€0)') : 
                 (isEn ? 'Ready-to-Race (+€69)' : 'Ready-to-Race (Montata +€69)');
@@ -1149,7 +1146,7 @@
             if (state.dividers.gomme > 0) dividersDetail.push(`${state.dividers.gomme} ${isEn ? 'Tires' : 'Porta gomme'}`);
 
             const extraCount = getExtraDividersCount();
-            const divExtraLabel = isEn ? ` (${extraCount} extra: +€${extraCount * 8})` : ` (${extraCount} extra: +€${extraCount * 8})`;
+            const divExtraLabel = ` (${extraCount} extra: +€${extraCount * 8})`;
             const divIncludedLabel = isEn ? ' (Included)' : ' (Inclusi)';
             const dividersText = dividersDetail.join(", ") + (extraCount > 0 ? divExtraLabel : divIncludedLabel);
             extrasList.push((isEn ? "Dividers: " : "Divisori: ") + dividersText);
@@ -1159,7 +1156,7 @@
                 extrasList.push(isEn ? `Custom Nameplate (+€15): "${plate}"` : `Targhetta Custom (+15€): "${plate}"`); 
             }
 
-            const extrasText = extrasList.length > 0 ? extrasList.join("\n   • ") : (isEn ? "None" : "Nessuno");
+            const extrasText = extrasList.length > 0 ? extrasList.join("\n   - ") : (isEn ? "None" : "Nessuno");
 
             let colorsFormatted = "";
             if (state.colorMode === 'custom') {
@@ -1172,21 +1169,21 @@
                 const descDividers = isEn ? data.descDividersEn : data.descDividers;
 
                 colorsFormatted = (isEn ? `🎨 *Custom Racing Livery (+€15):* ${liveryTitle}\n` : `🎨 *Livrea Racing Custom (+15€):* ${liveryTitle}\n`) +
-                                  `   • ${isEn ? 'Body & Doors' : 'Corpo e Porte'}: ${descBody}\n` +
-                                  `   • ${isEn ? 'Handle' : 'Maniglia'}: ${descHandle}\n` +
-                                  `   • ${isEn ? 'Dividers' : 'Divisori'}: ${descDividers}`;
+                                  `   - ${isEn ? 'Body and Doors' : 'Corpo e Porte'}: ${descBody}\n` +
+                                  `   - ${isEn ? 'Handle' : 'Maniglia'}: ${descHandle}\n` +
+                                  `   - ${isEn ? 'Dividers' : 'Divisori'}: ${descDividers}`;
                 
                 if (state.model === 'full' || state.extras.portaSuperiore) {
-                    colorsFormatted += `\n   • ${isEn ? 'Top Module' : 'Porta Sup'}: ${isEn ? data.descTopTrayEn : data.descTopTray}`;
+                    colorsFormatted += `\n   - ${isEn ? 'Top Module' : 'Porta Sup'}: ${isEn ? data.descTopTrayEn : data.descTopTray}`;
                 }
                 if (state.model === 'full' || state.extras.vascaExtra) {
-                    colorsFormatted += `\n   • ${isEn ? 'Lower Tray' : 'Vasca Inf'}: ${isEn ? data.descBottomTrayEn : data.descBottomTray}`;
+                    colorsFormatted += `\n   - ${isEn ? 'Lower Tray' : 'Vasca Inf'}: ${isEn ? data.descBottomTrayEn : data.descBottomTray}`;
                 }
                 if (state.model === 'full' || state.extras.organizzatoreScomparti) {
-                    colorsFormatted += `\n   • ${isEn ? 'Compartment Organizer' : 'Organizzatore scomparti'}: ${isEn ? data.descOrganizerEn : data.descOrganizer}`;
+                    colorsFormatted += `\n   - ${isEn ? 'Compartment Organizer' : 'Organizzatore scomparti'}: ${isEn ? data.descOrganizerEn : data.descOrganizer}`;
                 }
                 if (state.model === 'full' || state.extras.boxController) {
-                    colorsFormatted += `\n   • ${isEn ? 'Controller Box' : 'Controller'}: ${isEn ? data.descControllerEn : data.descController}`;
+                    colorsFormatted += `\n   - ${isEn ? 'Controller Box' : 'Controller'}: ${isEn ? data.descControllerEn : data.descController}`;
                 }
             } else {
                 colorsFormatted = isEn ? `🎨 *Colors:* Standard / Factory Random (Black/Red)` : `🎨 *Colori:* Standard / Random (Nero/Rosso)`;
@@ -1209,7 +1206,7 @@
             }
 
             const total = calculateTotal();
-            const emailStr = userEmail ? (isEn ? `\n✉️ *Email:* ${userEmail}` : `\n✉️ *Email:* ${userEmail}`) : "";
+            const emailStr = userEmail ? `\n✉️ *Email:* ${userEmail}` : "";
 
             let messageText = "";
             if (isEn) {
@@ -1219,7 +1216,7 @@
                               `🛠️ *Assembly:* ${assemblyName}` +
                               `${sizeFormatted}\n\n` +
                               `${colorsFormatted}\n\n` +
-                              `➕ *Modules & Extras:*\n   • ${extrasText}\n` +
+                              `📦 *Modules and Extras:*\n   - ${extrasText}\n` +
                               `${promoFormatted}\n` +
                               `💰 *TOTAL ESTIMATED:* € ${total}\n\n` +
                               `Could you please confirm availability to proceed with my order?`;
@@ -1230,13 +1227,18 @@
                               `🛠️ *Montaggio:* ${assemblyName}` +
                               `${sizeFormatted}\n\n` +
                               `${colorsFormatted}\n\n` +
-                              `➕ *Moduli & Extra:*\n   • ${extrasText}\n` +
+                              `📦 *Moduli ed Extra:*\n   - ${extrasText}\n` +
                               `${promoFormatted}\n` +
                               `💰 *TOTALE CALCOLATO:* € ${total}\n\n` +
                               `Mi confermi la disponibilità per procedere con l'ordine?`;
             }
 
-            const fullUrl = "https://api.whatsapp.com/send?phone=" + MY_WHATSAPP_NUMBER + "&text=" + encodeURIComponent(messageText);
+            // Codifica sicura al 100% per WhatsApp (evita troncamenti con &, + o caratteri riservati)
+            const safeEncodedText = encodeURIComponent(messageText)
+                .replace(/&/g, '%26')
+                .replace(/\+/g, '%2B');
+
+            const fullUrl = `https://api.whatsapp.com/send?phone=${MY_WHATSAPP_NUMBER}&text=${safeEncodedText}`;
             window.open(fullUrl, '_blank');
         }
 
