@@ -14,12 +14,11 @@
             --border-color: #334155;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); padding: 15px 15px 100px 15px; max-width: 600px; margin: 0 auto; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding: 20px 15px 100px 15px; max-width: 600px; margin: 0 auto; position: relative; }
         
-        /* Language Switcher */
-        .lang-switch-bar { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 10px; }
-        .lang-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-muted); padding: 5px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 4px; }
-        .lang-btn.active { background: var(--accent); color: #ffffff; border-color: var(--accent); }
+        .lang-switch-container { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+        .lang-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-muted); padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: all 0.2s; }
+        .lang-btn.active { border-color: var(--accent); color: white; background: #334155; }
 
         header { text-align: center; margin-bottom: 15px; }
         header h1 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-main); }
@@ -60,9 +59,12 @@
         .input-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
         .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: white; font-size: 0.95rem; }
 
-        .promo-feedback { margin-top: 6px; font-size: 0.8rem; font-weight: 600; display: none; }
+        .promo-container { display: flex; gap: 8px; margin-top: 5px; }
+        .promo-container input { flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: white; font-size: 0.9rem; text-transform: uppercase; }
+        .promo-btn { background: var(--card-bg); border: 1px solid var(--accent); color: var(--accent); padding: 0 15px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+        .promo-btn:hover { background: var(--accent); color: white; }
+        .promo-msg { font-size: 0.75rem; margin-top: 5px; font-weight: 600; display: none; }
 
-        /* Step 6 Switch & Custom Size */
         .switch-container { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 10px; padding: 15px; cursor: pointer; }
         .switch-info h3 { font-size: 0.95rem; margin-bottom: 3px; }
         .switch-info p { font-size: 0.8rem; color: #22c55e; font-weight: 600; }
@@ -113,10 +115,9 @@
 </head>
 <body>
 
-    <!-- BARRA CAMBIO LINGUA -->
-    <div class="lang-switch-bar">
+    <div class="lang-switch-container">
         <button class="lang-btn active" id="btn-lang-it" onclick="setLanguage('it')">🇮🇹 IT</button>
-        <button class="lang-btn" id="btn-lang-en" onclick="setLanguage('en')">🇬🇧 EN</button>
+        <button class="lang-btn" id="btn-lang-en" onclick="setLanguage('en')" style="margin-left: 6px;">🇬🇧 EN</button>
     </div>
 
     <header>
@@ -125,25 +126,25 @@
     </header>
 
     <div class="features-inline">
-        <span>🪶 <strong id="t-feat-weight">Leggerissima (&lt;2 kg base)</strong></span>
-        <span>🧩 <strong id="t-feat-modular">100% Modulare</strong></span>
-        <span>🛡️ <strong>PETG High-Impact</strong></span>
-        <span>🇮🇹 <strong>Made in Italy</strong></span>
+        <span>🪶 <strong id="t-feat-light">Leggerissima (&lt;2 kg base)</strong></span>
+        <span>🧩 <strong id="t-feat-mod">100% Modulare</strong></span>
+        <span>🛡️ <strong id="t-feat-petg">PETG High-Impact</strong></span>
+        <span>🇮🇹 <strong id="t-feat-italy">Made in Italy</strong></span>
     </div>
 
     <!-- STEP 1: CONFIGURAZIONE BASE -->
     <div class="step-title" id="t-step1-title">1. Scegli il Modello</div>
     <div class="grid-options">
         <div class="card-option selected" onclick="selectModel('base', 179)" id="model-base">
-            <h3 id="t-name-starter">Starter Pack</h3>
-            <div class="price" id="t-price-starter">Da €179</div>
-            <div class="desc" id="t-desc-starter">Corpo centrale + porte + maniglia + 4 divisori.</div>
+            <h3 id="t-model-base-title">Starter Pack</h3>
+            <div class="price" id="t-model-base-price">Da €179</div>
+            <div class="desc" id="t-model-base-desc">Corpo centrale + porte + maniglia + 4 divisori.</div>
             <span class="badge-size">📐 300L x 265P x 300H mm</span>
         </div>
         <div class="card-option" onclick="selectModel('full', 289)" id="model-full">
-            <h3 id="t-name-full">Valigetta Full</h3>
-            <div class="price" id="t-price-full">Da €289</div>
-            <div class="desc" id="t-desc-full">Starter Pack + Porta Superiore + Vasca Inferiore + Contenitore Controller + Organizzatore scomparti.</div>
+            <h3 id="t-model-full-title">Valigetta Full</h3>
+            <div class="price" id="t-model-full-price">Da €289</div>
+            <div class="desc" id="t-model-full-desc">Starter Pack + Porta Superiore + Vasca Inferiore + Contenitore Controller + Organizzatore scomparti.</div>
             <span class="badge-size">📐 300L x 265P x 440H mm</span>
         </div>
     </div>
@@ -151,7 +152,7 @@
     <!-- STEP 2: SCELTA DIVISORI UNIFICATA -->
     <div class="step-title" id="t-step2-title">2. Scegli i tuoi Divisori</div>
     <div class="dividers-container">
-        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;" id="t-dividers-note">
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;" id="t-dividers-info">
             4 divisori inclusi nel modello base. Oltre i 4 pezzi: <strong>+€8 cad.</strong>
         </div>
 
@@ -181,8 +182,8 @@
 
         <div class="dividers-row">
             <div class="divider-label">
-                <h4 id="t-div-tools-title">Porta attrezzi / oli</h4>
-                <p id="t-div-tools-desc">Alloggiamenti per cacciaviti, chiavi e boccette di olio/additivo</p>
+                <h4 id="t-div-attrezzi-title">Porta attrezzi / oli</h4>
+                <p id="t-div-attrezzi-desc">Alloggiamenti per cacciaviti, chiavi e boccette di olio/additivo</p>
             </div>
             <div class="counter-controls">
                 <button class="counter-btn" onclick="changeDivider('attrezziOli', -1)">-</button>
@@ -193,8 +194,8 @@
 
         <div class="dividers-row">
             <div class="divider-label">
-                <h4 id="t-div-tires-title">Porta gomme</h4>
-                <p id="t-div-tires-desc">Sede specifica per posizionare le gomme</p>
+                <h4 id="t-div-gomme-title">Porta gomme</h4>
+                <p id="t-div-gomme-desc">Sede specifica per posizionare le gomme</p>
             </div>
             <div class="counter-controls">
                 <button class="counter-btn" onclick="changeDivider('gomme', -1)">-</button>
@@ -204,7 +205,7 @@
         </div>
 
         <div class="dividers-summary">
-            <span id="t-div-summary-label">Totale Divisori Selezionati: <strong id="total-dividers-count">4</strong></span>
+            <span><span id="t-div-summary-label">Totale Divisori Selezionati:</span> <strong id="total-dividers-count">4</strong></span>
             <span id="dividers-extra-cost-badge" style="color: var(--accent); font-weight: bold;">(Inclusi)</span>
         </div>
     </div>
@@ -218,7 +219,7 @@
             <div class="desc" id="t-assembly-diy-desc">Tutti i pezzi stampati e minuterie da assemblare.</div>
         </div>
         <div class="card-option" onclick="selectAssembly('ready', 69)" id="assembly-ready">
-            <h3>Ready-to-Race</h3>
+            <h3 id="t-assembly-ready-title">Ready-to-Race</h3>
             <div class="price">+ €69</div>
             <div class="desc" id="t-assembly-ready-desc">Montata, collaudata e pronta all'uso.</div>
         </div>
@@ -238,13 +239,13 @@
             <div id="organizzatore-badge-container"></div>
         </div>
         <div class="card-option" id="extra-porta-sup" onclick="toggleExtra('portaSuperiore', 35)">
-            <h3 id="t-extra-porta-title">Porta Superiore (+ €35)</h3>
-            <div class="desc" id="t-extra-porta-desc">Modulo per la parte superiore della valigetta.</div>
+            <h3 id="t-extra-porta-sup-title">Porta Superiore (+ €35)</h3>
+            <div class="desc" id="t-extra-porta-sup-desc">Modulo per la parte superiore della valigetta.</div>
             <div id="porta-sup-badge-container"></div>
         </div>
         <div class="card-option" id="extra-box" onclick="toggleExtra('boxController', 25)">
             <h3 id="t-extra-box-title">Contenitore Controller (+ €25)</h3>
-            <div class="desc" id="t-extra-box-desc">Contenitore protettivo per il tuo pulsante.</div>
+            <div class="desc" id="t-extra-box-desc">Contenitore protettivo per il tuo pulsante da gara.</div>
             <div id="box-badge-container"></div>
         </div>
     </div>
@@ -253,20 +254,20 @@
     <div class="step-title" id="t-step5-title">5. Personalizzazione Colori</div>
     <div class="grid-options">
         <div class="card-option selected" onclick="selectColorMode('standard', 0)" id="colormode-standard">
-            <h3 id="t-color-std-title">Standard / Random</h3>
+            <h3 id="t-colormode-std-title">Standard / Random</h3>
             <div class="price">+ €0</div>
-            <div class="desc" id="t-color-std-desc">Combinazione standard Nero/Rosso di serie.</div>
+            <div class="desc" id="t-colormode-std-desc">Combinazione standard Nero/Rosso di serie.</div>
         </div>
         <div class="card-option" onclick="selectColorMode('custom', 15)" id="colormode-custom">
-            <h3 id="t-color-custom-title">Livree Racing Custom</h3>
+            <h3 id="t-colormode-cust-title">Livree Racing Custom</h3>
             <div class="price">+ €15</div>
-            <div class="desc" id="t-color-custom-desc">Scegli tra le 4 livree racing iconiche.</div>
+            <div class="desc" id="t-colormode-cust-desc">Scegli tra le 4 livree racing iconiche.</div>
         </div>
     </div>
 
     <div id="livery-select-container" style="display: none; margin-top: 15px;">
         <div class="input-group">
-            <label id="t-lbl-livery-select">Seleziona Livrea Racing:</label>
+            <label id="t-livery-select-label">Seleziona Livrea Racing:</label>
             <select id="livery-select" onchange="onLiveryChange(this.value)">
                 <option value="gulf">Livrea Heritage Endurance (ex-Gulf)</option>
                 <option value="martini">Livrea Rally Classico (ex-Martini)</option>
@@ -279,27 +280,31 @@
             <h4 id="livery-title">Dettaglio Componenti Livrea:</h4>
             <ul>
                 <li id="detail-body">
-                    <span>• <strong id="t-lbl-body">Corpo centrale e porte:</strong> <span id="txtBody">Azzurro, Bianco e Arancione</span></span>
+                    <span>• <strong id="lbl-body">Corpo centrale e porte:</strong> <span id="txtBody">Azzurro, Bianco e Arancione</span></span>
                     <div class="swatch-box" id="swatchBody"></div>
                 </li>
                 <li id="detail-handle">
-                    <span>• <strong id="t-lbl-handle">Maniglia:</strong> <span id="txtHandle">Nera</span></span>
+                    <span>• <strong id="lbl-handle">Maniglia:</strong> <span id="txtHandle">Nera</span></span>
                     <div class="swatch-box" id="swatchHandle"></div>
                 </li>
                 <li id="detail-top-tray" style="display: none;">
-                    <span>• <strong id="t-lbl-top">Porta Superiore:</strong> <span id="txtTopTray">Arancione</span></span>
+                    <span>• <strong id="lbl-top-tray">Porta Superiore:</strong> <span id="txtTopTray">Arancione</span></span>
                     <div class="swatch-box" id="swatchTopTray"></div>
                 </li>
                 <li id="detail-bottom-tray" style="display: none;">
-                    <span>• <strong id="t-lbl-bottom">Vasca Inferiore:</strong> <span id="txtBottomTray">Arancione</span></span>
+                    <span>• <strong id="lbl-bottom-tray">Vasca Inferiore:</strong> <span id="txtBottomTray">Arancione</span></span>
                     <div class="swatch-box" id="swatchBottomTray"></div>
                 </li>
+                <li id="detail-organizer" style="display: none;">
+                    <span>• <strong id="lbl-organizer">Organizzatore scomparti:</strong> <span id="txtOrganizer">Arancione</span></span>
+                    <div class="swatch-box" id="swatchOrganizer"></div>
+                </li>
                 <li id="detail-controller" style="display: none;">
-                    <span>• <strong id="t-lbl-controller">Contenitore Controller:</strong> <span id="txtController">Nero</span></span>
+                    <span>• <strong id="lbl-controller">Contenitore Controller:</strong> <span id="txtController">Nero</span></span>
                     <div class="swatch-box" id="swatchController"></div>
                 </li>
                 <li id="detail-dividers">
-                    <span>• <strong id="t-lbl-dividers">Divisori Interni:</strong> <span id="txtDividers">Neri</span></span>
+                    <span>• <strong id="lbl-dividers">Divisori Interni:</strong> <span id="txtDividers">Neri</span></span>
                     <div class="swatch-box" id="swatchDividers"></div>
                 </li>
             </ul>
@@ -311,7 +316,7 @@
     <div class="switch-container" onclick="toggleSizeSwitch()">
         <div class="switch-info">
             <h3 id="t-size-switch-title">Attiva Misure Personalizzate</h3>
-            <p id="t-size-switch-sub">🎁 Gratis (+€0)</p>
+            <p id="t-size-switch-badge">🎁 Gratis (+€0)</p>
         </div>
         <label class="toggle-switch" onclick="event.stopPropagation()">
             <input type="checkbox" id="sizeToggle" onchange="onSizeToggleChange()">
@@ -322,49 +327,50 @@
     <div class="size-panel" id="sizePanel">
         <div class="inputs-3col">
             <div>
-                <label id="t-lbl-w">Larghezza (mm)</label>
+                <label id="t-label-width">Larghezza (mm)</label>
                 <input type="number" id="customW" placeholder="Max 300" max="300" oninput="validateWidth(this)">
             </div>
             <div>
-                <label id="t-lbl-h">Altezza (mm)</label>
+                <label id="t-label-height">Altezza (mm)</label>
                 <input type="number" id="customH" placeholder="mm">
             </div>
             <div>
-                <label id="t-lbl-d">Profondità (mm)</label>
+                <label id="t-label-depth">Profondità (mm)</label>
                 <input type="number" id="customD" placeholder="mm">
             </div>
         </div>
         <div class="size-note" id="t-size-note">⚠️ Nota: La larghezza massima consentita è di 300 mm per garantire la stabilità strutturale.</div>
     </div>
 
-    <!-- STEP 7: PERSONALIZZAZIONI EXTRA -->
+    <!-- STEP 7: PERSONALIZZAZIONI EXTRA & PROMO -->
     <div class="step-title" id="t-step7-title">7. Personalizzazioni Extra</div>
     <div class="input-group">
-        <label id="t-lbl-plate">Nome / Numero Pilota per Targhetta Custom (+ €15)</label>
+        <label id="t-label-plate">Nome / Numero Pilota per Targhetta Custom (+ €15)</label>
         <input type="text" id="custom-plate" placeholder="Es. Mario Rossi #42" oninput="updateTotal()">
     </div>
 
-    <!-- STEP 8: CODICE SCONTO / PROMO CODE -->
-    <div class="step-title" id="t-step8-title">8. Codice Sconto</div>
     <div class="input-group">
-        <label id="t-lbl-promo">Hai un Codice Promo?</label>
-        <input type="text" id="promo-code" placeholder="Inserisci il codice sconto" oninput="updateTotal()">
-        <div id="promo-feedback" class="promo-feedback"></div>
+        <label id="t-label-promo">Codice Promozionale / Coupon</label>
+        <div class="promo-container">
+            <input type="text" id="promo-code-input" placeholder="Codice Promo">
+            <button class="promo-btn" type="button" onclick="applyPromoCode()" id="t-promo-btn">Applica</button>
+        </div>
+        <div class="promo-msg" id="promo-message"></div>
     </div>
 
     <div class="input-group">
-        <label id="t-lbl-username">Il tuo Nome e Cognome</label>
+        <label id="t-label-name">Il tuo Nome e Cognome</label>
         <input type="text" id="user-name" placeholder="Inserisci il tuo nome">
     </div>
-
     <div class="input-group">
-        <label id="t-lbl-email">La tua Email (per aggiornamenti e comunicazioni)</label>
-        <input type="email" id="user-email" placeholder="Es. mario.rossi@email.com">
+        <label id="t-label-email">La tua Email</label>
+        <input type="email" id="user-email" placeholder="esempio@email.com">
     </div>
 
+    <!-- FAQ & DOCUMENTI -->
     <div class="faq-accordion">
         <div class="faq-header" onclick="toggleFaq()">
-            <span id="t-faq-header">🔧 Istruzioni Montaggio & Documenti</span>
+            <span id="t-faq-title">🔧 Istruzioni Montaggio & Documenti</span>
             <span id="faq-icon">▼</span>
         </div>
         <div class="faq-content" id="faq-content">
@@ -374,10 +380,10 @@
                 • <strong>Ricambi Singoli:</strong> In caso di rottura di un componente durante le gare, è possibile riordinare esclusivamente il singolo pezzo senza dover riacquistare l'intera valigetta.
             </div>
             <div class="faq-links-group">
-                <a href="https://drive.google.com/file/d/1p7PFAOxWiwOQLcNdsqaksBDdWs5yU30J/view?usp=sharing" class="faq-link" target="_blank" id="t-link-manual">
+                <a href="https://drive.google.com/file/d/1r3FTenfJgj4DgPZc8LFZhGay3nslI65d/view?usp=drive_link" class="faq-link" target="_blank" id="t-faq-link-instructions">
                     📄 Scarica Istruzioni di Montaggio (PDF)
                 </a>
-                <a href="https://drive.google.com/file/d/1xpbRP5zhkOc9aJwURRD5R1Vfua1JKHbs/view?usp=drive_link" class="faq-link" target="_blank" id="t-link-presentation">
+                <a href="https://drive.google.com/file/d/1xpbRP5zhkOc9aJwURRD5R1Vfua1JKHbs/view?usp=drive_link" class="faq-link" target="_blank" id="t-faq-link-presentation">
                     📊 Scarica Presentazione Prodotto (PDF)
                 </a>
             </div>
@@ -386,16 +392,16 @@
 
     <div class="info-disclaimer-box">
         <div class="info-disclaimer-section">
-            <div class="info-disclaimer-title" id="t-ship-title">🚚 Spedizioni & Tempi:</div>
+            <div class="info-disclaimer-title" id="t-shipping-title">🚚 Spedizioni & Tempi:</div>
             <ul class="info-disclaimer-list">
-                <li id="t-ship-stock"><strong>Pezzi in Stock (Pronta Consegna):</strong> Spedizione rapida entro <strong>24/48 ore</strong>.</li>
-                <li id="t-ship-custom"><strong>Su Ordinazione / Colori Custom:</strong> Evasione in <strong>10-15 giorni lavorativi</strong> (stampa e collaudo).</li>
+                <li id="t-shipping-stock"><strong>Pezzi in Stock (Pronta Consegna):</strong> Spedizione rapida entro <strong>24/48 ore</strong>.</li>
+                <li id="t-shipping-custom"><strong>Su Ordinazione / Colori Custom:</strong> Evasione in <strong>10-15 giorni lavorativi</strong> (stampa e collaudo).</li>
             </ul>
-            <div class="info-disclaimer-text" style="margin-top: 6px;" id="t-ship-note">Spedizione tracciata tramite corriere espresso in tutta Italia ed Europa.</div>
+            <div class="info-disclaimer-text" style="margin-top: 6px;" id="t-shipping-note">Spedizione tracciata tramite corriere espresso in tutta Italia ed Europa.</div>
         </div>
         <div class="info-disclaimer-section" style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
-            <div class="info-disclaimer-title" id="t-pay-title">💳 Modalità di Pagamento:</div>
-            <div class="info-disclaimer-text" id="t-pay-note">Il pagamento (PayPal / Bonifico) verrà concordato direttamente su WhatsApp dopo la conferma della disponibilità.</div>
+            <div class="info-disclaimer-title" id="t-payment-title">💳 Modalità di Pagamento & Contatti:</div>
+            <div class="info-disclaimer-text" id="t-payment-text">Il pagamento (PayPal / Bonifico) verrà concordato direttamente su WhatsApp o via email dopo la conferma della disponibilità.<br>Email: <strong>modularslotcarcase@gmail.com</strong></div>
         </div>
     </div>
 
@@ -405,7 +411,7 @@
             <span id="t-total-label">Totale Stimato</span>
         </div>
         <button class="btn-whatsapp" onclick="sendWhatsApp()">
-            <span id="t-wa-btn-label">Ordina su WA 🚀</span>
+            <span id="t-btn-wa">Ordina su WA 🚀</span>
         </button>
     </div>
 
@@ -413,275 +419,309 @@
         const MY_WHATSAPP_NUMBER = "393472412300"; 
         let currentLang = 'it';
 
-        const TRANSLATIONS = {
+        const I18N = {
             it: {
                 headerSub: "Configura la tua valigetta su misura",
-                featWeight: "Leggerissima (<2 kg base)",
-                featModular: "100% Modulare",
-                step1Title: "1. Scegli il Modello",
-                nameStarter: "Starter Pack",
-                priceStarter: "Da €179",
-                descStarter: "Corpo centrale + porte + maniglia + 4 divisori.",
-                nameFull: "Valigetta Full",
-                priceFull: "Da €289",
-                descFull: "Starter Pack + Porta Superiore + Vasca Inferiore + Contenitore Controller + Organizzatore scomparti.",
-                step2Title: "2. Scegli i tuoi Divisori",
-                dividersNote: "4 divisori inclusi nel modello base. Oltre i 4 pezzi: <strong>+€8 cad.</strong>",
+                featLight: "Leggerissima (<2 kg base)",
+                featMod: "100% Modulare",
+                featPetg: "PETG High-Impact",
+                featItaly: "Made in Italy",
+                step1: "1. Scegli il Modello",
+                modelBaseTitle: "Starter Pack",
+                modelBasePrice: "Da €179",
+                modelBaseDesc: "Corpo centrale + porte + maniglia + 4 divisori.",
+                modelFullTitle: "Valigetta Full",
+                modelFullPrice: "Da €289",
+                modelFullDesc: "Starter Pack + Porta Superiore + Vasca Inferiore + Contenitore Controller + Organizzatore scomparti.",
+                step2: "2. Scegli i tuoi Divisori",
+                dividersInfo: "4 divisori inclusi nel modello base. Oltre i 4 pezzi: <strong>+€8 cad.</strong>",
                 divLiscioTitle: "Ripiano Multiuso / Liscio",
                 divLiscioDesc: "Superficie piana per scatole e minuterie",
                 divSlotcarTitle: "Porta slotcar",
                 divSlotcarDesc: "Alloggiamento sagomato per posizionare la slotcar",
-                divToolsTitle: "Porta attrezzi / oli",
-                divToolsDesc: "Alloggiamenti per cacciaviti, chiavi e boccette di olio/additivo",
-                divTiresTitle: "Porta gomme",
-                divTiresDesc: "Sede specifica per posizionare le gomme",
-                divSummaryLabel: "Totale Divisori Selezionati: ",
-                includedBadge: "(Inclusi)",
-                extraBadge: (count, cost) => `(${count} Extra: +€${cost})`,
-                step3Title: "3. Modalità di Consegna",
+                divAttrezziTitle: "Porta attrezzi / oli",
+                divAttrezziDesc: "Alloggiamenti per cacciaviti, chiavi e boccette di olio/additivo",
+                divGommeTitle: "Porta gomme",
+                divGommeDesc: "Sede specifica per posizionare le gomme",
+                divSummaryLabel: "Totale Divisori Selezionati:",
+                divIncluded: "(Inclusi)",
+                divExtraBadge: (count, cost) => `(${count} Extra: +€${cost})`,
+                step3: "3. Modalità di Consegna",
                 assemblyDiyTitle: "Kit da Montare",
                 assemblyDiyDesc: "Tutti i pezzi stampati e minuterie da assemblare.",
+                assemblyReadyTitle: "Ready-to-Race",
                 assemblyReadyDesc: "Montata, collaudata e pronta all'uso.",
-                step4Title: "4. Moduli Extra & Accessori",
+                step4: "4. Moduli Extra & Accessori",
                 extraVascaTitle: "Vasca Inferiore (+ €35)",
                 extraVascaDesc: "Modulo extra inferiore per ulteriore stivaggio.",
                 extraOrgTitle: "Organizzatore scomparti (+ €25)",
                 extraOrgDesc: "Divisori per organizzare la vasca inferiore.",
-                extraPortaTitle: "Porta Superiore (+ €35)",
-                extraPortaDesc: "Modulo per la parte superiore della valigetta.",
+                extraPortaSupTitle: "Porta Superiore (+ €35)",
+                extraPortaSupDesc: "Modulo per la parte superiore della valigetta.",
                 extraBoxTitle: "Contenitore Controller (+ €25)",
-                extraBoxDesc: "Contenitore protettivo per il tuo pulsante.",
-                badgeFullInc: "Inclusa nella versione Full",
-                badgeOrgFullInc: "Incluso nella versione Full",
-                badgeBoxFullInc: "Incluso nella versione Full",
+                extraBoxDesc: "Contenitore protettivo per il tuo pulsante da gara.",
+                badgeIncludedFull: "Inclusa nella versione Full",
                 badgeReqVasca: "Richiede Vasca Inferiore",
-                badgeReqTop: "Richiede Porta Superiore",
-                step5Title: "5. Personalizzazione Colori",
-                colorStdTitle: "Standard / Random",
-                colorStdDesc: "Combinazione standard Nero/Rosso di serie.",
-                colorCustomTitle: "Livree Racing Custom",
-                colorCustomDesc: "Scegli tra le 4 livree racing iconiche.",
-                lblLiverySelect: "Seleziona Livrea Racing:",
+                badgeReqPortaSup: "Richiede Porta Superiore",
+                step5: "5. Personalizzazione Colori",
+                colormodeStdTitle: "Standard / Random",
+                colormodeStdDesc: "Combinazione standard Nero/Rosso di serie.",
+                colormodeCustTitle: "Livree Racing Custom",
+                colormodeCustDesc: "Scegli tra le 4 livree racing iconiche.",
+                liverySelectLabel: "Seleziona Livrea Racing:",
                 liveryDetailTitle: "Dettaglio Componenti Livrea:",
                 lblBody: "Corpo centrale e porte:",
                 lblHandle: "Maniglia:",
-                lblTop: "Porta Superiore:",
-                lblBottom: "Vasca Inferiore:",
+                lblTopTray: "Porta Superiore:",
+                lblBottomTray: "Vasca Inferiore:",
+                lblOrganizer: "Organizzatore scomparti:",
                 lblController: "Contenitore Controller:",
                 lblDividers: "Divisori Interni:",
-                step6Title: "6. Personalizzazione gratuita delle misure",
+                step6: "6. Personalizzazione gratuita delle misure",
                 sizeSwitchTitle: "Attiva Misure Personalizzate",
-                sizeSwitchSub: "🎁 Gratis (+€0)",
-                lblW: "Larghezza (mm)",
-                lblH: "Altezza (mm)",
-                lblD: "Profondità (mm)",
+                sizeSwitchBadge: "🎁 Gratis (+€0)",
+                labelWidth: "Larghezza (mm)",
+                labelHeight: "Altezza (mm)",
+                labelDepth: "Profondità (mm)",
                 sizeNote: "⚠️ Nota: La larghezza massima consentita è di 300 mm per garantire la stabilità strutturale.",
-                step7Title: "7. Personalizzazioni Extra",
-                lblPlate: "Nome / Numero Pilota per Targhetta Custom (+ €15)",
-                placeholderPlate: "Es. Mario Rossi #42",
-                step8Title: "8. Codice Sconto",
-                lblPromo: "Hai un Codice Promo?",
-                placeholderPromo: "Inserisci il codice sconto",
-                lblUsername: "Il tuo Nome e Cognome",
-                placeholderUsername: "Inserisci il tuo nome",
-                lblEmail: "La tua Email (per aggiornamenti e comunicazioni)",
-                placeholderEmail: "Es. mario.rossi@email.com",
-                faqHeader: "🔧 Istruzioni Montaggio & Documenti",
+                step7: "7. Personalizzazioni Extra",
+                labelPlate: "Nome / Numero Pilota per Targhetta Custom (+ €15)",
+                platePlaceholder: "Es. Mario Rossi #42",
+                labelPromo: "Codice Promozionale / Coupon",
+                promoPlaceholder: "Codice Promo",
+                promoBtn: "Applica",
+                promoActiveMsg: "🎟️ Codice applicato: Livrea Custom e Targhetta GRATIS (-€30)",
+                promoInvalidMsg: "⚠️ Codice non valido o scaduto.",
+                labelName: "Il tuo Nome e Cognome",
+                namePlaceholder: "Inserisci il tuo nome",
+                labelEmail: "La tua Email",
+                faqTitle: "🔧 Istruzioni Montaggio & Documenti",
                 faqText: "• <strong>Difficoltà Montaggio:</strong> Semplice. Il Kit include tutte le viti, cerniere e istruzioni passo-passo.<br>• <strong>Attrezzi necessari:</strong> Saldatore e chiave a brugola M3.<br>• <strong>Ricambi Singoli:</strong> In caso di rottura di un componente durante le gare, è possibile riordinare esclusivamente il singolo pezzo senza dover riacquistare l'intera valigetta.",
-                linkManual: "📄 Scarica Istruzioni di Montaggio (PDF)",
-                linkPresentation: "📊 Scarica Presentazione Prodotto (PDF)",
-                shipTitle: "🚚 Spedizioni & Tempi:",
-                shipStock: "<strong>Pezzi in Stock (Pronta Consegna):</strong> Spedizione rapida entro <strong>24/48 ore</strong>.",
-                shipCustom: "<strong>Su Ordinazione / Colori Custom:</strong> Evasione in <strong>10-15 giorni lavorativi</strong> (stampa e collaudo).",
-                shipNote: "Spedizione tracciata tramite corriere espresso in tutta Italia ed Europa.",
-                payTitle: "💳 Modalità di Pagamento:",
-                payNote: "Il pagamento (PayPal / Bonifico) verrà concordato direttamente su WhatsApp dopo la conferma della disponibilità.",
+                faqLinkInstructions: "📄 Scarica Istruzioni di Montaggio (PDF)",
+                faqLinkPresentation: "📊 Scarica Presentazione Prodotto (PDF)",
+                shippingTitle: "🚚 Spedizioni & Tempi:",
+                shippingStock: "<strong>Pezzi in Stock (Pronta Consegna):</strong> Spedizione rapida entro <strong>24/48 ore</strong>.",
+                shippingCustom: "<strong>Su Ordinazione / Colori Custom:</strong> Evasione in <strong>10-15 giorni lavorativi</strong> (stampa e collaudo).",
+                shippingNote: "Spedizione tracciata tramite corriere espresso in tutta Italia ed Europa.",
+                paymentTitle: "💳 Modalità di Pagamento & Contatti:",
+                paymentText: "Il pagamento (PayPal / Bonifico) verrà concordato direttamente su WhatsApp o via email dopo la conferma della disponibilità.<br>Email: <strong>modularslotcarcase@gmail.com</strong>",
                 totalLabel: "Totale Stimato",
-                waBtnLabel: "Ordina su WA 🚀",
+                btnWa: "Ordina su WA 🚀",
                 alertName: "Inserisci il tuo nome per procedere!",
-                alertWidth: "La larghezza massima consentita è di 300 mm.",
-                promoSuccess: (amount) => `🎁 Codice applicato! Sconto di €${amount} su Personalizzazioni Custom.`,
-                promoHint: `🎁 Codice "free custom" attivo! Seleziona la Livrea Custom o la Targhetta per applicare lo sconto.`,
-                promoExpired: `❌ Il codice promo "free custom" è scaduto il 30/09/2026.`,
-                promoInvalid: `❌ Codice sconto non valido.`
+                alertWidth: "La larghezza massima consentita è di 300 mm."
             },
             en: {
-                headerSub: "Configure your custom-tailored case",
-                featWeight: "Ultra-lightweight (<2 kg base)",
-                featModular: "100% Modular",
-                step1Title: "1. Choose Your Chassis",
-                nameStarter: "Starter Pack",
-                priceStarter: "From €179",
-                descStarter: "Central body + doors + handle + 4 dividers.",
-                nameFull: "Full Case",
-                priceFull: "From €289",
-                descFull: "Starter Pack + Top Cover Module + Lower Tray + Controller Box + Compartment Organizer.",
-                step2Title: "2. Choose Your Dividers",
-                dividersNote: "4 dividers included in base model. Beyond 4 units: <strong>+€8 each.</strong>",
-                divLiscioTitle: "Flat / Utility Shelf",
-                divLiscioDesc: "Flat surface for spare parts boxes and hardware",
+                headerSub: "Configure your custom modular slot car case",
+                featLight: "Ultralight (<2 kg base)",
+                featMod: "100% Modular",
+                featPetg: "PETG High-Impact",
+                featItaly: "Made in Italy",
+                step1: "1. Choose Base Model",
+                modelBaseTitle: "Starter Pack",
+                modelBasePrice: "From €179",
+                modelBaseDesc: "Main chassis + doors + handle + 4 dividers.",
+                modelFullTitle: "Full Modular Case",
+                modelFullPrice: "From €289",
+                modelFullDesc: "Starter Pack + Top Module + Lower Tray + Controller Box + Compartment organizer.",
+                step2: "2. Choose your Dividers",
+                dividersInfo: "4 dividers included in base model. Extra dividers: <strong>+€8 each</strong>",
+                divLiscioTitle: "Flat / Multipurpose Shelf",
+                divLiscioDesc: "Flat tray for boxes and spare parts",
                 divSlotcarTitle: "Slot Car Tray",
-                divSlotcarDesc: "Contoured slot engineered to secure the slot car",
-                divToolsTitle: "Tool & Fluid Holder",
-                divToolsDesc: "Dedicated slots for screwdrivers, keys, and oil bottles",
-                divTiresTitle: "Tire Tray",
-                divTiresDesc: "Specific tray engineered to secure racing tires",
-                divSummaryLabel: "Total Dividers Selected: ",
-                includedBadge: "(Included)",
-                extraBadge: (count, cost) => `(${count} Extra: +€${cost})`,
-                step3Title: "3. Delivery & Assembly",
+                divSlotcarDesc: "Molded slot car chassis holder",
+                divAttrezziTitle: "Tools & Oil Bottles Tray",
+                divAttrezziDesc: "Dedicated slots for screwdrivers, wrenches and oil bottles",
+                divGommeTitle: "Tires Tray",
+                divGommeDesc: "Dedicated molded slots for tires",
+                divSummaryLabel: "Total Dividers Selected:",
+                divIncluded: "(Included)",
+                divExtraBadge: (count, cost) => `(${count} Extra: +€${cost})`,
+                step3: "3. Delivery & Assembly",
                 assemblyDiyTitle: "DIY Assembly Kit",
-                assemblyDiyDesc: "All 3D printed parts and hardware to assemble.",
-                assemblyReadyDesc: "Fully assembled, tested, and track-ready.",
-                step4Title: "4. Extra Modules & Accessories",
-                extraVascaTitle: "Lower Tray (+ €35)",
-                extraVascaDesc: "Base expansion module for extra gear storage.",
+                assemblyDiyDesc: "All 3D printed parts and hardware included to assemble.",
+                assemblyReadyTitle: "Ready-to-Race",
+                assemblyReadyDesc: "Fully assembled, tuned and track-ready.",
+                step4: "4. Extra Modules & Accessories",
+                extraVascaTitle: "Lower Tray Module (+ €35)",
+                extraVascaDesc: "Extra bottom module for additional storage.",
                 extraOrgTitle: "Compartment Organizer (+ €25)",
-                extraOrgDesc: "Tiered dividers to organize the lower tray.",
-                extraPortaTitle: "Top Cover Module (+ €35)",
-                extraPortaDesc: "Roof expansion module for the top section.",
+                extraOrgDesc: "Dividers to organize the lower tray module.",
+                extraPortaSupTitle: "Top Cover Module (+ €35)",
+                extraPortaSupDesc: "Top modular enclosure for your case.",
                 extraBoxTitle: "Controller Box (+ €25)",
-                extraBoxDesc: "Protective case tailored for your racing controller.",
-                badgeFullInc: "Included in Full Case",
-                badgeOrgFullInc: "Included in Full Case",
-                badgeBoxFullInc: "Included in Full Case",
+                extraBoxDesc: "Protective box for your electronic controller.",
+                badgeIncludedFull: "Included in Full version",
                 badgeReqVasca: "Requires Lower Tray",
-                badgeReqTop: "Requires Top Cover Module",
-                step5Title: "5. Color Customization",
-                colorStdTitle: "Standard / Random",
-                colorStdDesc: "Standard factory Black/Red combination.",
-                colorCustomTitle: "Custom Racing Liveries",
-                colorCustomDesc: "Select from 4 iconic racing liveries.",
-                lblLiverySelect: "Select Racing Livery:",
-                liveryDetailTitle: "Livery Component Breakdown:",
-                lblBody: "Main body and doors:",
+                badgeReqPortaSup: "Requires Top Module",
+                step5: "5. Color & Livery Customization",
+                colormodeStdTitle: "Standard / Random",
+                colormodeStdDesc: "Standard factory Black/Red combination.",
+                colormodeCustTitle: "Custom Racing Liveries",
+                colormodeCustDesc: "Choose among 4 iconic racing liveries.",
+                liverySelectLabel: "Select Racing Livery:",
+                liveryDetailTitle: "Livery Components Breakdown:",
+                lblBody: "Main body & doors:",
                 lblHandle: "Handle:",
-                lblTop: "Top Cover Module:",
-                lblBottom: "Lower Tray:",
+                lblTopTray: "Top Cover Module:",
+                lblBottomTray: "Lower Tray Module:",
+                lblOrganizer: "Compartment Organizer:",
                 lblController: "Controller Box:",
                 lblDividers: "Internal Dividers:",
-                step6Title: "6. Free Custom Dimensions",
+                step6: "6. Free Custom Dimensions",
                 sizeSwitchTitle: "Enable Custom Dimensions",
-                sizeSwitchSub: "🎁 Free (+€0)",
-                lblW: "Width (mm)",
-                lblH: "Height (mm)",
-                lblD: "Depth (mm)",
-                sizeNote: "⚠️ Note: Maximum allowable width is 300 mm to ensure structural rigidity.",
-                step7Title: "7. Extra Customization",
-                lblPlate: "Driver Name / Number for Custom Plate (+ €15)",
-                placeholderPlate: "e.g. John Doe #42",
-                step8Title: "8. Promo Code",
-                lblPromo: "Have a Promo Code?",
-                placeholderPromo: "Enter promo code",
-                lblUsername: "Your Full Name",
-                placeholderUsername: "Enter your full name",
-                lblEmail: "Your Email Address (for order updates)",
-                placeholderEmail: "e.g. john.doe@email.com",
-                faqHeader: "🔧 Assembly Instructions & Documents",
-                faqText: "• <strong>Assembly Difficulty:</strong> Simple. The DIY kit includes all screws, hinges, and step-by-step guides.<br>• <strong>Required Tools:</strong> Soldering iron and M3 hex key.<br>• <strong>Individual Spare Parts:</strong> In case of race impact damage, order exclusively the single damaged part without repurchasing the whole case.",
-                linkManual: "📄 Download Assembly Manual (PDF)",
-                linkPresentation: "📊 Download Product Presentation (PDF)",
-                shipTitle: "🚚 Shipping & Lead Times:",
-                shipStock: "<strong>In-Stock Items (Immediate Dispatch):</strong> Ships rapidly within <strong>24/48 hours</strong>.",
-                shipCustom: "<strong>Made-to-Order / Custom Colors:</strong> Dispatched in <strong>10-15 business days</strong> (printing and testing).",
-                shipNote: "Tracked express courier shipping across Italy and Europe.",
-                payTitle: "💳 Payment Methods:",
-                payNote: "Payment (PayPal / Bank Transfer) will be arranged directly on WhatsApp upon availability confirmation.",
+                sizeSwitchBadge: "🎁 Free (+€0)",
+                labelWidth: "Width (mm)",
+                labelHeight: "Height (mm)",
+                labelDepth: "Depth (mm)",
+                sizeNote: "⚠️ Note: Maximum allowed width is 300 mm for structural rigidity.",
+                step7: "7. Extra Customizations",
+                labelPlate: "Driver Name / Racing # for Custom Plate (+ €15)",
+                platePlaceholder: "e.g. John Doe #42",
+                labelPromo: "Promo / Coupon Code",
+                promoPlaceholder: "Promo Code",
+                promoBtn: "Apply",
+                promoActiveMsg: "🎟️ Coupon applied: Custom Livery & Nameplate FREE (-€30)",
+                promoInvalidMsg: "⚠️ Invalid or expired coupon code.",
+                labelName: "Your Full Name",
+                namePlaceholder: "Enter your full name",
+                labelEmail: "Your Email Address",
+                faqTitle: "🔧 Assembly Instructions & Docs",
+                faqText: "• <strong>Assembly Difficulty:</strong> Simple. The Kit includes all screws, hinges and step-by-step instructions.<br>• <strong>Tools needed:</strong> Soldering iron and M3 hex key.<br>• <strong>Individual Spare Parts:</strong> In case of accidental track crash, you can order single spare 3D printed components without replacing the whole case.",
+                faqLinkInstructions: "📄 Download Assembly Manual (PDF)",
+                faqLinkPresentation: "📊 Download Product Presentation (PDF)",
+                shippingTitle: "🚚 Shipping & Turnaround:",
+                shippingStock: "<strong>In-Stock Items (Ready to ship):</strong> Dispatched within <strong>24/48 hours</strong>.",
+                shippingCustom: "<strong>Built-to-Order / Custom Liveries:</strong> Turnaround in <strong>10-15 business days</strong> (printing & testing).",
+                shippingNote: "Tracked express courier shipping all across Italy & Europe.",
+                paymentTitle: "💳 Payment Methods & Contacts:",
+                paymentText: "Payment (PayPal / Bank Wire) will be confirmed directly via WhatsApp or Email after stock confirmation.<br>Email: <strong>modularslotcarcase@gmail.com</strong>",
                 totalLabel: "Estimated Total",
-                waBtnLabel: "Order on WA 🚀",
-                alertName: "Please enter your name to proceed!",
-                alertWidth: "Maximum allowable width is 300 mm.",
-                promoSuccess: (amount) => `🎁 Code applied! €${amount} discount on Custom Options.`,
-                promoHint: `🎁 Promo "free custom" active! Select a Custom Livery or Plate to redeem your discount.`,
-                promoExpired: `❌ Promo code "free custom" expired on 30/09/2026.`,
-                promoInvalid: `❌ Invalid promo code.`
+                btnWa: "Order via WA 🚀",
+                alertName: "Please enter your name before proceeding!",
+                alertWidth: "Maximum allowed width is 300 mm."
             }
         };
 
         const LIVERY_DATA = {
             gulf: {
-                name_it: "Livrea Heritage Endurance (ex-Gulf)",
-                name_en: "Heritage Endurance Livery (Gulf Blue/Orange)",
-                descBodyStarter_it: "Azzurro, Bianco e Arancione",
-                descBodyStarter_en: "Light Blue, White and Orange",
-                descBodyFull_it: "Azzurro e Bianco",
-                descBodyFull_en: "Light Blue and White",
-                descHandle_it: "Nera",
-                descHandle_en: "Black",
-                descTopTray_it: "Arancione",
-                descTopTray_en: "Orange",
-                descBottomTray_it: "Arancione",
-                descBottomTray_en: "Orange",
-                descController_it: "Nero",
-                descController_en: "Black",
-                descDividers_it: "Neri",
-                descDividers_en: "Black",
+                name: "Livrea Heritage Endurance (ex-Gulf)",
+                nameEn: "Heritage Endurance Livery (Gulf Style)",
+                descBodyStarter: "Azzurro, Bianco e Arancione",
+                descBodyStarterEn: "Light Blue, White and Orange",
+                descBodyFull: "Azzurro e Bianco",
+                descBodyFullEn: "Light Blue and White",
+                descHandle: "Nera",
+                descHandleEn: "Black",
+                descTopTray: "Arancione",
+                descTopTrayEn: "Orange",
+                descBottomTray: "Arancione",
+                descBottomTrayEn: "Orange",
+                descOrganizer: "Arancione",
+                descOrganizerEn: "Orange",
+                descController: "Nero",
+                descControllerEn: "Black",
+                descDividers: "Neri",
+                descDividersEn: "Black",
                 colorsStarter: { body: ["#38bdf8", "#ffffff", "#f97316"] },
                 colorsFull: { body: ["#38bdf8", "#ffffff"] },
-                colors: { handle: ["#1e293b"], topTray: ["#f97316"], bottomTray: ["#f97316"], controller: ["#1e293b"], dividers: ["#1e293b"] }
+                colors: {
+                    handle: ["#1e293b"],
+                    topTray: ["#f97316"],
+                    bottomTray: ["#f97316"],
+                    organizer: ["#f97316"],
+                    controller: ["#1e293b"],
+                    dividers: ["#1e293b"]
+                }
             },
             martini: {
-                name_it: "Livrea Rally Classico (ex-Martini)",
-                name_en: "Classic Rally Livery (Martini White/Navy/Red)",
-                descBodyStarter_it: "Bianco, Blu Navy e Rosso",
-                descBodyStarter_en: "White, Navy Blue and Red",
-                descBodyFull_it: "Bianco e Blu Navy",
-                descBodyFull_en: "White and Navy Blue",
-                descHandle_it: "Blu Navy",
-                descHandle_en: "Navy Blue",
-                descTopTray_it: "Rossa",
-                descTopTray_en: "Red",
-                descBottomTray_it: "Rossa",
-                descBottomTray_en: "Red",
-                descController_it: "Rosso",
-                descController_en: "Red",
-                descDividers_it: "Gialli",
-                descDividers_en: "Yellow",
+                name: "Livrea Rally Classico (ex-Martini)",
+                nameEn: "Classic Rally Livery (Martini Style)",
+                descBodyStarter: "Bianco, Blu Navy e Rosso",
+                descBodyStarterEn: "White, Navy Blue and Red",
+                descBodyFull: "Bianco e Blu Navy",
+                descBodyFullEn: "White and Navy Blue",
+                descHandle: "Blu Navy",
+                descHandleEn: "Navy Blue",
+                descTopTray: "Rossa",
+                descTopTrayEn: "Red",
+                descBottomTray: "Rossa",
+                descBottomTrayEn: "Red",
+                descOrganizer: "Rossa",
+                descOrganizerEn: "Red",
+                descController: "Rosso",
+                descControllerEn: "Red",
+                descDividers: "Gialli",
+                descDividersEn: "Yellow",
                 colorsStarter: { body: ["#ffffff", "#1e3a8a", "#ef4444"] },
                 colorsFull: { body: ["#ffffff", "#1e3a8a"] },
-                colors: { handle: ["#1e3a8a"], topTray: ["#ef4444"], bottomTray: ["#ef4444"], controller: ["#ef4444"], dividers: ["#eab308"] }
+                colors: {
+                    handle: ["#1e3a8a"],
+                    topTray: ["#ef4444"],
+                    bottomTray: ["#ef4444"],
+                    organizer: ["#ef4444"],
+                    controller: ["#ef4444"],
+                    dividers: ["#eab308"]
+                }
             },
             jps: {
-                name_it: "Livrea Stealth Racing (ex-JPS)",
-                name_en: "Stealth Racing Livery (JPS Black/Gold)",
-                descBodyStarter_it: "Nero Satinato, Nero Matte e Giallo",
-                descBodyStarter_en: "Satin Black, Matte Black and Yellow",
-                descBodyFull_it: "Nero Satinato e Nero Matte",
-                descBodyFull_en: "Satin Black and Matte Black",
-                descHandle_it: "Gialla",
-                descHandle_en: "Yellow",
-                descTopTray_it: "Gialla",
-                descTopTray_en: "Yellow",
-                descBottomTray_it: "Gialla",
-                descBottomTray_en: "Yellow",
-                descController_it: "Nero",
-                descController_en: "Black",
-                descDividers_it: "Neri",
-                descDividers_en: "Black",
+                name: "Livrea Stealth Racing (ex-JPS)",
+                nameEn: "Stealth Racing Livery (JPS Style)",
+                descBodyStarter: "Nero Satinato, Nero Matte e Giallo",
+                descBodyStarterEn: "Satin Black, Matte Black and Yellow",
+                descBodyFull: "Nero Satinato e Nero Matte",
+                descBodyFullEn: "Satin Black and Matte Black",
+                descHandle: "Gialla",
+                descHandleEn: "Yellow",
+                descTopTray: "Gialla",
+                descTopTrayEn: "Yellow",
+                descBottomTray: "Gialla",
+                descBottomTrayEn: "Yellow",
+                descOrganizer: "Giallo",
+                descOrganizerEn: "Yellow",
+                descController: "Nero",
+                descControllerEn: "Black",
+                descDividers: "Neri",
+                descDividersEn: "Black",
                 colorsStarter: { body: ["#0f172a", "#334155", "#eab308"] },
                 colorsFull: { body: ["#0f172a", "#334155"] },
-                colors: { handle: ["#eab308"], topTray: ["#eab308"], bottomTray: ["#eab308"], controller: ["#0f172a"], dividers: ["#0f172a"] }
+                colors: {
+                    handle: ["#eab308"],
+                    topTray: ["#eab308"],
+                    bottomTray: ["#eab308"],
+                    organizer: ["#eab308"],
+                    controller: ["#0f172a"],
+                    dividers: ["#0f172a"]
+                }
             },
             corsa: {
-                name_it: "Livrea Competizione (Rosso Corsa)",
-                name_en: "Competizione Livery (Racing Red/White/Black)",
-                descBodyStarter_it: "Rosso Corsa, Nero e Bianco",
-                descBodyStarter_en: "Racing Red, Black and White",
-                descBodyFull_it: "Rosso Corsa e Nero",
-                descBodyFull_en: "Racing Red and Black",
-                descHandle_it: "Rossa",
-                descHandle_en: "Red",
-                descTopTray_it: "Bianca",
-                descTopTray_en: "White",
-                descBottomTray_it: "Bianca",
-                descBottomTray_en: "White",
-                descController_it: "Nero",
-                descController_en: "Black",
-                descDividers_it: "Rossi",
-                descDividers_en: "Red",
+                name: "Livrea Competizione (Rosso Corsa)",
+                nameEn: "Competition Livery (Rosso Corsa)",
+                descBodyStarter: "Rosso Corsa, Nero e Bianco",
+                descBodyStarterEn: "Rosso Corsa, Black and White",
+                descBodyFull: "Rosso Corsa e Nero",
+                descBodyFullEn: "Rosso Corsa and Black",
+                descHandle: "Rossa",
+                descHandleEn: "Red",
+                descTopTray: "Bianca",
+                descTopTrayEn: "White",
+                descBottomTray: "Bianca",
+                descBottomTrayEn: "White",
+                descOrganizer: "Bianco",
+                descOrganizerEn: "White",
+                descController: "Nero",
+                descControllerEn: "Black",
+                descDividers: "Rossi",
+                descDividersEn: "Red",
                 colorsStarter: { body: ["#ef4444", "#0f172a", "#ffffff"] },
                 colorsFull: { body: ["#ef4444", "#0f172a"] },
-                colors: { handle: ["#ef4444"], topTray: ["#ffffff"], bottomTray: ["#ffffff"], controller: ["#0f172a"], dividers: ["#ef4444"] }
+                colors: {
+                    handle: ["#ef4444"],
+                    topTray: ["#ffffff"],
+                    bottomTray: ["#ffffff"],
+                    organizer: ["#ffffff"],
+                    controller: ["#0f172a"],
+                    dividers: ["#ef4444"]
+                }
             }
         };
         
@@ -690,112 +730,109 @@
             colorMode: 'standard', colorModePrice: 0, selectedLivery: 'gulf',
             customSizeActive: false,
             dividers: { liscio: 1, slotcar: 1, attrezziOli: 1, gomme: 1 },
-            extras: { vascaExtra: false, organizzatoreScomparti: false, portaSuperiore: false, boxController: false }
+            extras: { vascaExtra: false, organizzatoreScomparti: false, portaSuperiore: false, boxController: false },
+            promoCode: "", promoDiscount: 0
         };
 
         function setLanguage(lang) {
             currentLang = lang;
-            document.documentElement.lang = lang;
             document.getElementById('btn-lang-it').classList.toggle('active', lang === 'it');
             document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
-
-            const t = TRANSLATIONS[lang];
+            
+            const t = I18N[lang];
             document.getElementById('t-header-sub').innerText = t.headerSub;
-            document.getElementById('t-feat-weight').innerText = t.featWeight;
-            document.getElementById('t-feat-modular').innerText = t.featModular;
+            document.getElementById('t-feat-light').innerText = t.featLight;
+            document.getElementById('t-feat-mod').innerText = t.featMod;
+            document.getElementById('t-feat-petg').innerText = t.featPetg;
+            document.getElementById('t-feat-italy').innerText = t.featItaly;
 
-            document.getElementById('t-step1-title').innerText = t.step1Title;
-            document.getElementById('t-name-starter').innerText = t.nameStarter;
-            document.getElementById('t-price-starter').innerText = t.priceStarter;
-            document.getElementById('t-desc-starter').innerText = t.descStarter;
-            document.getElementById('t-name-full').innerText = t.nameFull;
-            document.getElementById('t-price-full').innerText = t.priceFull;
-            document.getElementById('t-desc-full').innerText = t.descFull;
+            document.getElementById('t-step1-title').innerText = t.step1;
+            document.getElementById('t-model-base-title').innerText = t.modelBaseTitle;
+            document.getElementById('t-model-base-price').innerText = t.modelBasePrice;
+            document.getElementById('t-model-base-desc').innerText = t.modelBaseDesc;
+            document.getElementById('t-model-full-title').innerText = t.modelFullTitle;
+            document.getElementById('t-model-full-price').innerText = t.modelFullPrice;
+            document.getElementById('t-model-full-desc').innerText = t.modelFullDesc;
 
-            document.getElementById('t-step2-title').innerText = t.step2Title;
-            document.getElementById('t-dividers-note').innerHTML = t.dividersNote;
+            document.getElementById('t-step2-title').innerText = t.step2;
+            document.getElementById('t-dividers-info').innerHTML = t.dividersInfo;
             document.getElementById('t-div-liscio-title').innerText = t.divLiscioTitle;
             document.getElementById('t-div-liscio-desc').innerText = t.divLiscioDesc;
             document.getElementById('t-div-slotcar-title').innerText = t.divSlotcarTitle;
             document.getElementById('t-div-slotcar-desc').innerText = t.divSlotcarDesc;
-            document.getElementById('t-div-tools-title').innerText = t.divToolsTitle;
-            document.getElementById('t-div-tools-desc').innerText = t.divToolsDesc;
-            document.getElementById('t-div-tires-title').innerText = t.divTiresTitle;
-            document.getElementById('t-div-tires-desc').innerText = t.divTiresDesc;
+            document.getElementById('t-div-attrezzi-title').innerText = t.divAttrezziTitle;
+            document.getElementById('t-div-attrezzi-desc').innerText = t.divAttrezziDesc;
+            document.getElementById('t-div-gomme-title').innerText = t.divGommeTitle;
+            document.getElementById('t-div-gomme-desc').innerText = t.divGommeDesc;
+            document.getElementById('t-div-summary-label').innerText = t.divSummaryLabel;
 
-            document.getElementById('t-step3-title').innerText = t.step3Title;
+            document.getElementById('t-step3-title').innerText = t.step3;
             document.getElementById('t-assembly-diy-title').innerText = t.assemblyDiyTitle;
             document.getElementById('t-assembly-diy-desc').innerText = t.assemblyDiyDesc;
+            document.getElementById('t-assembly-ready-title').innerText = t.assemblyReadyTitle;
             document.getElementById('t-assembly-ready-desc').innerText = t.assemblyReadyDesc;
 
-            document.getElementById('t-step4-title').innerText = t.step4Title;
+            document.getElementById('t-step4-title').innerText = t.step4;
             document.getElementById('t-extra-vasca-title').innerText = t.extraVascaTitle;
             document.getElementById('t-extra-vasca-desc').innerText = t.extraVascaDesc;
             document.getElementById('t-extra-org-title').innerText = t.extraOrgTitle;
             document.getElementById('t-extra-org-desc').innerText = t.extraOrgDesc;
-            document.getElementById('t-extra-porta-title').innerText = t.extraPortaTitle;
-            document.getElementById('t-extra-porta-desc').innerText = t.extraPortaDesc;
+            document.getElementById('t-extra-porta-sup-title').innerText = t.extraPortaSupTitle;
+            document.getElementById('t-extra-porta-sup-desc').innerText = t.extraPortaSupDesc;
             document.getElementById('t-extra-box-title').innerText = t.extraBoxTitle;
             document.getElementById('t-extra-box-desc').innerText = t.extraBoxDesc;
 
-            document.getElementById('t-step5-title').innerText = t.step5Title;
-            document.getElementById('t-color-std-title').innerText = t.colorStdTitle;
-            document.getElementById('t-color-std-desc').innerText = t.colorStdDesc;
-            document.getElementById('t-color-custom-title').innerText = t.colorCustomTitle;
-            document.getElementById('t-color-custom-desc').innerText = t.colorCustomDesc;
-            document.getElementById('t-lbl-livery-select').innerText = t.lblLiverySelect;
+            document.getElementById('t-step5-title').innerText = t.step5;
+            document.getElementById('t-colormode-std-title').innerText = t.colormodeStdTitle;
+            document.getElementById('t-colormode-std-desc').innerText = t.colormodeStdDesc;
+            document.getElementById('t-colormode-cust-title').innerText = t.colormodeCustTitle;
+            document.getElementById('t-colormode-cust-desc').innerText = t.colormodeCustDesc;
+            document.getElementById('t-livery-select-label').innerText = t.liverySelectLabel;
             document.getElementById('livery-title').innerText = t.liveryDetailTitle;
-            document.getElementById('t-lbl-body').innerText = t.lblBody;
-            document.getElementById('t-lbl-handle').innerText = t.lblHandle;
-            document.getElementById('t-lbl-top').innerText = t.lblTop;
-            document.getElementById('t-lbl-bottom').innerText = t.lblBottom;
-            document.getElementById('t-lbl-controller').innerText = t.lblController;
-            document.getElementById('t-lbl-dividers').innerText = t.lblDividers;
 
-            // Opzioni tendina livrea
-            const livSelect = document.getElementById('livery-select');
-            livSelect.options[0].text = lang === 'en' ? "Heritage Endurance Livery (Gulf Blue/Orange)" : "Livrea Heritage Endurance (ex-Gulf)";
-            livSelect.options[1].text = lang === 'en' ? "Classic Rally Livery (Martini White/Blue/Red)" : "Livrea Rally Classico (ex-Martini)";
-            livSelect.options[2].text = lang === 'en' ? "Stealth Racing Livery (JPS Black/Gold)" : "Livrea Stealth Racing (ex-JPS)";
-            livSelect.options[3].text = lang === 'en' ? "Competizione Livery (Rosso Corsa)" : "Livrea Competizione (Rosso Corsa)";
+            document.getElementById('lbl-body').innerText = t.lblBody;
+            document.getElementById('lbl-handle').innerText = t.lblHandle;
+            document.getElementById('lbl-top-tray').innerText = t.lblTopTray;
+            document.getElementById('lbl-bottom-tray').innerText = t.lblBottomTray;
+            document.getElementById('lbl-organizer').innerText = t.lblOrganizer;
+            document.getElementById('lbl-controller').innerText = t.lblController;
+            document.getElementById('lbl-dividers').innerText = t.lblDividers;
 
-            document.getElementById('t-step6-title').innerText = t.step6Title;
+            document.getElementById('t-step6-title').innerText = t.step6;
             document.getElementById('t-size-switch-title').innerText = t.sizeSwitchTitle;
-            document.getElementById('t-size-switch-sub').innerText = t.sizeSwitchSub;
-            document.getElementById('t-lbl-w').innerText = t.lblW;
-            document.getElementById('t-lbl-h').innerText = t.lblH;
-            document.getElementById('t-lbl-d').innerText = t.lblD;
+            document.getElementById('t-size-switch-badge').innerText = t.sizeSwitchBadge;
+            document.getElementById('t-label-width').innerText = t.labelWidth;
+            document.getElementById('t-label-height').innerText = t.labelHeight;
+            document.getElementById('t-label-depth').innerText = t.labelDepth;
             document.getElementById('t-size-note').innerText = t.sizeNote;
 
-            document.getElementById('t-step7-title').innerText = t.step7Title;
-            document.getElementById('t-lbl-plate').innerText = t.lblPlate;
-            document.getElementById('custom-plate').placeholder = t.placeholderPlate;
+            document.getElementById('t-step7-title').innerText = t.step7;
+            document.getElementById('t-label-plate').innerText = t.labelPlate;
+            document.getElementById('custom-plate').placeholder = t.platePlaceholder;
+            document.getElementById('t-label-promo').innerText = t.labelPromo;
+            document.getElementById('promo-code-input').placeholder = t.promoPlaceholder;
+            document.getElementById('t-promo-btn').innerText = t.promoBtn;
+            document.getElementById('t-label-name').innerText = t.labelName;
+            document.getElementById('user-name').placeholder = t.namePlaceholder;
+            document.getElementById('t-label-email').innerText = t.labelEmail;
 
-            document.getElementById('t-step8-title').innerText = t.step8Title;
-            document.getElementById('t-lbl-promo').innerText = t.lblPromo;
-            document.getElementById('promo-code').placeholder = t.placeholderPromo;
-
-            document.getElementById('t-lbl-username').innerText = t.lblUsername;
-            document.getElementById('user-name').placeholder = t.placeholderUsername;
-            document.getElementById('t-lbl-email').innerText = t.lblEmail;
-            document.getElementById('user-email').placeholder = t.placeholderEmail;
-
-            document.getElementById('t-faq-header').innerText = t.faqHeader;
+            document.getElementById('t-faq-title').innerText = t.faqTitle;
             document.getElementById('t-faq-text').innerHTML = t.faqText;
-            document.getElementById('t-link-manual').innerText = t.linkManual;
-            document.getElementById('t-link-presentation').innerText = t.linkPresentation;
+            document.getElementById('t-faq-link-instructions').innerText = t.faqLinkInstructions;
+            document.getElementById('t-faq-link-presentation').innerText = t.faqLinkPresentation;
 
-            document.getElementById('t-ship-title').innerText = t.shipTitle;
-            document.getElementById('t-ship-stock').innerHTML = t.shipStock;
-            document.getElementById('t-ship-custom').innerHTML = t.shipCustom;
-            document.getElementById('t-ship-note').innerText = t.shipNote;
-            document.getElementById('t-pay-title').innerText = t.payTitle;
-            document.getElementById('t-pay-note').innerText = t.payNote;
+            document.getElementById('t-shipping-title').innerText = t.shippingTitle;
+            document.getElementById('t-shipping-stock').innerHTML = t.shippingStock;
+            document.getElementById('t-shipping-custom').innerHTML = t.shippingCustom;
+            document.getElementById('t-shipping-note').innerText = t.shippingNote;
+            document.getElementById('t-payment-title').innerText = t.paymentTitle;
+            document.getElementById('t-payment-text').innerHTML = t.paymentText;
+
             document.getElementById('t-total-label').innerText = t.totalLabel;
-            document.getElementById('t-wa-btn-label').innerText = t.waBtnLabel;
+            document.getElementById('t-btn-wa').innerText = t.btnWa;
 
-            updateExtraStates();
             updateDividersSummary();
+            updateExtraStates();
             updateLiveryDetails();
             updateTotal();
         }
@@ -821,12 +858,12 @@
 
         function updateDividersSummary() {
             const total = state.dividers.liscio + state.dividers.slotcar + state.dividers.attrezziOli + state.dividers.gomme;
-            const t = TRANSLATIONS[currentLang];
-            document.getElementById('t-div-summary-label').innerHTML = `${t.divSummaryLabel} <strong id="total-dividers-count">${total}</strong>`;
+            document.getElementById('total-dividers-count').innerText = total;
             const badge = document.getElementById('dividers-extra-cost-badge');
             const extraCount = getExtraDividersCount();
-            if (extraCount > 0) { badge.innerText = t.extraBadge(extraCount, extraCount * 8); }
-            else { badge.innerText = t.includedBadge; }
+            const t = I18N[currentLang];
+            if (extraCount > 0) { badge.innerText = t.divExtraBadge(extraCount, extraCount * 8); }
+            else { badge.innerText = t.divIncluded; }
         }
 
         function selectModel(modelType, price) {
@@ -855,7 +892,7 @@
 
         function validateWidth(input) {
             if (parseInt(input.value) > 300) {
-                alert(TRANSLATIONS[currentLang].alertWidth);
+                alert(I18N[currentLang].alertWidth);
                 input.value = 300;
             }
         }
@@ -897,41 +934,48 @@
             const data = LIVERY_DATA[state.selectedLivery];
             const isEn = (currentLang === 'en');
             document.getElementById('livery-details-box').style.display = 'block';
-            document.getElementById('livery-title').innerText = isEn ? data.name_en : data.name_it;
+            document.getElementById('livery-title').innerText = isEn ? data.nameEn : data.name;
 
             if (state.model === 'base') {
-                document.getElementById('txtBody').innerText = isEn ? data.descBodyStarter_en : data.descBodyStarter_it;
+                document.getElementById('txtBody').innerText = isEn ? data.descBodyStarterEn : data.descBodyStarter;
                 createSwatches('swatchBody', data.colorsStarter.body);
             } else {
-                document.getElementById('txtBody').innerText = isEn ? data.descBodyFull_en : data.descBodyFull_it;
+                document.getElementById('txtBody').innerText = isEn ? data.descBodyFullEn : data.descBodyFull;
                 createSwatches('swatchBody', data.colorsFull.body);
             }
 
-            document.getElementById('txtHandle').innerText = isEn ? data.descHandle_en : data.descHandle_it;
+            document.getElementById('txtHandle').innerText = isEn ? data.descHandleEn : data.descHandle;
             createSwatches('swatchHandle', data.colors.handle);
 
-            document.getElementById('txtDividers').innerText = isEn ? data.descDividers_en : data.descDividers_it;
+            document.getElementById('txtDividers').innerText = isEn ? data.descDividersEn : data.descDividers;
             createSwatches('swatchDividers', data.colors.dividers);
 
             const hasTop = (state.model === 'full' || state.extras.portaSuperiore);
             const hasBottom = (state.model === 'full' || state.extras.vascaExtra);
+            const hasOrganizer = (state.model === 'full' || state.extras.organizzatoreScomparti);
             const hasController = (state.model === 'full' || state.extras.boxController);
 
             document.getElementById('detail-top-tray').style.display = hasTop ? 'flex' : 'none';
             if (hasTop) {
-                document.getElementById('txtTopTray').innerText = isEn ? data.descTopTray_en : data.descTopTray_it;
+                document.getElementById('txtTopTray').innerText = isEn ? data.descTopTrayEn : data.descTopTray;
                 createSwatches('swatchTopTray', data.colors.topTray);
             }
 
             document.getElementById('detail-bottom-tray').style.display = hasBottom ? 'flex' : 'none';
             if (hasBottom) {
-                document.getElementById('txtBottomTray').innerText = isEn ? data.descBottomTray_en : data.descBottomTray_it;
+                document.getElementById('txtBottomTray').innerText = isEn ? data.descBottomTrayEn : data.descBottomTray;
                 createSwatches('swatchBottomTray', data.colors.bottomTray);
+            }
+
+            document.getElementById('detail-organizer').style.display = hasOrganizer ? 'flex' : 'none';
+            if (hasOrganizer) {
+                document.getElementById('txtOrganizer').innerText = isEn ? data.descOrganizerEn : data.descOrganizer;
+                createSwatches('swatchOrganizer', data.colors.organizer);
             }
 
             document.getElementById('detail-controller').style.display = hasController ? 'flex' : 'none';
             if (hasController) {
-                document.getElementById('txtController').innerText = isEn ? data.descController_en : data.descController_it;
+                document.getElementById('txtController').innerText = isEn ? data.descControllerEn : data.descController;
                 createSwatches('swatchController', data.colors.controller);
             }
         }
@@ -945,7 +989,7 @@
         }
 
         function updateExtraStates() {
-            const t = TRANSLATIONS[currentLang];
+            const t = I18N[currentLang];
             const vascaCard = document.getElementById('extra-vasca');
             const orgCard = document.getElementById('extra-organizzatore');
             const portaSupCard = document.getElementById('extra-porta-sup');
@@ -963,16 +1007,16 @@
                 state.extras.boxController = false;
 
                 vascaCard.classList.remove('selected'); vascaCard.classList.add('disabled');
-                vascaBadge.innerHTML = `<span class="badge-info">${t.badgeFullInc}</span>`;
-                
+                vascaBadge.innerHTML = `<span class="badge-info">${t.badgeIncludedFull}</span>`;
+
                 orgCard.classList.remove('selected'); orgCard.classList.add('disabled');
-                orgBadge.innerHTML = `<span class="badge-info">${t.badgeOrgFullInc}</span>`;
+                orgBadge.innerHTML = `<span class="badge-info">${t.badgeIncludedFull}</span>`;
 
                 portaSupCard.classList.remove('selected'); portaSupCard.classList.add('disabled');
-                portaSupBadge.innerHTML = `<span class="badge-info">${t.badgeFullInc}</span>`;
-                
+                portaSupBadge.innerHTML = `<span class="badge-info">${t.badgeIncludedFull}</span>`;
+
                 boxCard.classList.remove('selected'); boxCard.classList.add('disabled');
-                boxBadge.innerHTML = `<span class="badge-info">${t.badgeBoxFullInc}</span>`;
+                boxBadge.innerHTML = `<span class="badge-info">${t.badgeIncludedFull}</span>`;
             } else {
                 vascaCard.classList.remove('disabled'); vascaBadge.innerHTML = '';
                 vascaCard.classList.toggle('selected', state.extras.vascaExtra);
@@ -992,7 +1036,7 @@
                 if (!state.extras.portaSuperiore) {
                     state.extras.boxController = false;
                     boxCard.classList.remove('selected'); boxCard.classList.add('disabled');
-                    boxBadge.innerHTML = `<span class="badge-warning">${t.badgeReqTop}</span>`;
+                    boxBadge.innerHTML = `<span class="badge-warning">${t.badgeReqPortaSup}</span>`;
                 } else {
                     boxCard.classList.remove('disabled'); boxBadge.innerHTML = '';
                     boxCard.classList.toggle('selected', state.extras.boxController);
@@ -1004,17 +1048,40 @@
             if (state.model === 'full') return;
             if (extraKey === 'organizzatoreScomparti' && !state.extras.vascaExtra) return;
             if (extraKey === 'boxController' && !state.extras.portaSuperiore) return;
-
+            
             state.extras[extraKey] = !state.extras[extraKey];
-
-            if (extraKey === 'vascaExtra' && !state.extras.vascaExtra) {
-                state.extras.organizzatoreScomparti = false;
+            
+            if (extraKey === 'vascaExtra' && !state.extras.vascaExtra) { 
+                state.extras.organizzatoreScomparti = false; 
             }
-            if (extraKey === 'portaSuperiore' && !state.extras.portaSuperiore) {
-                state.extras.boxController = false;
+            if (extraKey === 'portaSuperiore' && !state.extras.portaSuperiore) { 
+                state.extras.boxController = false; 
             }
+            
+            updateExtraStates(); 
+            updateLiveryDetails(); 
+            updateTotal();
+        }
 
-            updateExtraStates(); updateLiveryDetails(); updateTotal();
+        function applyPromoCode() {
+            const input = document.getElementById('promo-code-input').value.trim().toUpperCase();
+            const msg = document.getElementById('promo-message');
+            const now = new Date();
+            const expiryDate = new Date('2026-09-30T23:59:59');
+            const t = I18N[currentLang];
+
+            if ((input === "FREE CUSTOM" || input === "FREECUSTOM" || input === "PASSIONE") && now <= expiryDate) {
+                state.promoCode = input;
+                msg.style.display = 'block';
+                msg.style.color = '#22c55e';
+                msg.innerText = t.promoActiveMsg;
+            } else {
+                state.promoCode = "";
+                msg.style.display = 'block';
+                msg.style.color = '#ef4444';
+                msg.innerText = t.promoInvalidMsg;
+            }
+            updateTotal();
         }
 
         function calculateTotal() {
@@ -1027,46 +1094,17 @@
             }
             total += (getExtraDividersCount() * 8);
 
-            // Calcolo extra custom
             let liveryCost = (state.colorMode === 'custom') ? 15 : 0;
             const plateInput = document.getElementById('custom-plate');
             let plateCost = (plateInput && plateInput.value.trim().length > 0) ? 15 : 0;
 
-            // Logica Codice Promo con Data di Scadenza (30 Settembre 2026)
-            const promoInput = document.getElementById('promo-code');
-            const promoFeedback = document.getElementById('promo-feedback');
-            const promoVal = promoInput ? promoInput.value.trim().toLowerCase() : '';
-            const t = TRANSLATIONS[currentLang];
-
-            const currentDate = new Date();
-            const expirationDate = new Date('2026-09-30T23:59:59');
-
-            if (promoVal === 'free custom') {
-                if (currentDate <= expirationDate) {
-                    let savedAmount = liveryCost + plateCost;
-                    if (savedAmount > 0) {
-                        promoFeedback.innerText = t.promoSuccess(savedAmount);
-                        promoFeedback.style.color = '#22c55e';
-                    } else {
-                        promoFeedback.innerText = t.promoHint;
-                        promoFeedback.style.color = '#38bdf8';
-                    }
-                } else {
-                    promoFeedback.innerText = t.promoExpired;
-                    promoFeedback.style.color = '#ef4444';
-                    total += liveryCost + plateCost;
-                }
-                promoFeedback.style.display = 'block';
-            } else if (promoVal.length > 0) {
-                promoFeedback.innerText = t.promoInvalid;
-                promoFeedback.style.color = '#ef4444';
-                promoFeedback.style.display = 'block';
-                total += liveryCost + plateCost;
+            if (state.promoCode !== "") {
+                state.promoDiscount = liveryCost + plateCost;
             } else {
-                if (promoFeedback) promoFeedback.style.display = 'none';
-                total += liveryCost + plateCost;
+                state.promoDiscount = 0;
             }
 
+            total += liveryCost + plateCost - state.promoDiscount;
             return total;
         }
 
@@ -1076,23 +1114,20 @@
         }
 
         function sendWhatsApp() {
-            const isEn = (currentLang === 'en');
             const userName = document.getElementById('user-name').value.trim();
-            if (!userName) { alert(TRANSLATIONS[currentLang].alertName); return; }
             const userEmail = document.getElementById('user-email').value.trim();
+            const t = I18N[currentLang];
+            const isEn = (currentLang === 'en');
 
-            const modelName = state.model === 'base' 
-                ? 'Starter Pack' 
-                : (isEn ? 'Full Case' : 'Valigetta Full');
-            const assemblyName = state.assembly === 'diy' 
-                ? (isEn ? 'DIY Assembly Kit' : 'Kit da Montare (DIY)') 
-                : (isEn ? 'Ready-to-Race (Pre-assembled)' : 'Ready-to-Race (Montata)');
+            if (!userName) { alert(t.alertName); return; }
 
-            const promoInput = document.getElementById('promo-code');
-            const promoVal = promoInput ? promoInput.value.trim().toLowerCase() : '';
-            const currentDate = new Date();
-            const expirationDate = new Date('2026-09-30T23:59:59');
-            const isPromoActive = (promoVal === 'free custom' && currentDate <= expirationDate);
+            const modelName = state.model === 'base' ? 
+                (isEn ? 'Starter Pack (Base)' : 'Starter Pack (Base)') : 
+                (isEn ? 'Full Modular Case' : 'Valigetta Full');
+
+            const assemblyName = state.assembly === 'diy' ? 
+                (isEn ? 'DIY Assembly Kit (+€0)' : 'Kit da Montare (DIY +€0)') : 
+                (isEn ? 'Ready-to-Race (+€69)' : 'Ready-to-Race (Montata +€69)');
 
             let extrasList = [];
             if (state.model === 'full') {
@@ -1108,63 +1143,53 @@
             }
 
             let dividersDetail = [];
-            if (state.dividers.liscio > 0) dividersDetail.push(`${state.dividers.liscio} ${isEn ? 'Flat Shelf' : 'Multiuso/Liscio'}`);
-            if (state.dividers.slotcar > 0) dividersDetail.push(`${state.dividers.slotcar} ${isEn ? 'Slotcar Tray' : 'Porta slotcar'}`);
-            if (state.dividers.attrezziOli > 0) dividersDetail.push(`${state.dividers.attrezziOli} ${isEn ? 'Tool/Fluid Holder' : 'Porta attrezzi / oli'}`);
-            if (state.dividers.gomme > 0) dividersDetail.push(`${state.dividers.gomme} ${isEn ? 'Tire Tray' : 'Porta gomme'}`);
+            if (state.dividers.liscio > 0) dividersDetail.push(`${state.dividers.liscio} ${isEn ? 'Flat/Multipurpose' : 'Multiuso/Liscio'}`);
+            if (state.dividers.slotcar > 0) dividersDetail.push(`${state.dividers.slotcar} ${isEn ? 'Slot Car' : 'Porta slotcar'}`);
+            if (state.dividers.attrezziOli > 0) dividersDetail.push(`${state.dividers.attrezziOli} ${isEn ? 'Tools/Oil' : 'Porta attrezzi/oli'}`);
+            if (state.dividers.gomme > 0) dividersDetail.push(`${state.dividers.gomme} ${isEn ? 'Tires' : 'Porta gomme'}`);
 
             const extraCount = getExtraDividersCount();
-            const incText = isEn ? ' (Included)' : ' (Inclusi)';
-            const dividersText = dividersDetail.join(", ") + (extraCount > 0 ? ` (${extraCount} extra: +€${extraCount * 8})` : incText);
-            extrasList.push((isEn ? "Chosen Dividers: " : "Divisori scelti: ") + dividersText);
+            const divExtraLabel = isEn ? ` (${extraCount} extra: +€${extraCount * 8})` : ` (${extraCount} extra: +€${extraCount * 8})`;
+            const divIncludedLabel = isEn ? ' (Included)' : ' (Inclusi)';
+            const dividersText = dividersDetail.join(", ") + (extraCount > 0 ? divExtraLabel : divIncludedLabel);
+            extrasList.push((isEn ? "Dividers: " : "Divisori: ") + dividersText);
 
             const plate = document.getElementById('custom-plate').value.trim();
             if (plate) { 
-                let plateText = "";
-                if (isEn) {
-                    plateText = isPromoActive ? `Custom Plate (FREE promo): "${plate}"` : `Custom Plate (+€15): "${plate}"`;
-                } else {
-                    plateText = isPromoActive ? `Targhetta Custom (GRATIS promo): "${plate}"` : `Targhetta Custom (+15€): "${plate}"`;
-                }
-                extrasList.push(plateText); 
+                extrasList.push(isEn ? `Custom Nameplate (+€15): "${plate}"` : `Targhetta Custom (+15€): "${plate}"`); 
             }
 
-            const extrasText = extrasList.length > 0 ? extrasList.join(isEn ? "\n   • " : "\n   • ") : (isEn ? "None" : "Nessuno");
+            const extrasText = extrasList.length > 0 ? extrasList.join("%0A   • ") : (isEn ? "None" : "Nessuno");
 
             let colorsFormatted = "";
             if (state.colorMode === 'custom') {
                 const data = LIVERY_DATA[state.selectedLivery];
-                const liveryName = isEn ? data.name_en : data.name_it;
-                const descBody = state.model === 'base' 
-                    ? (isEn ? data.descBodyStarter_en : data.descBodyStarter_it) 
-                    : (isEn ? data.descBodyFull_en : data.descBodyFull_it);
-                const descHandle = isEn ? data.descHandle_en : data.descHandle_it;
-                const descDividers = isEn ? data.descDividers_en : data.descDividers_it;
+                const liveryTitle = isEn ? data.nameEn : data.name;
+                const descBody = state.model === 'base' ? 
+                    (isEn ? data.descBodyStarterEn : data.descBodyStarter) : 
+                    (isEn ? data.descBodyFullEn : data.descBodyFull);
+                const descHandle = isEn ? data.descHandleEn : data.descHandle;
+                const descDividers = isEn ? data.descDividersEn : data.descDividers;
 
-                let liveryTag = "";
-                if (isEn) {
-                    liveryTag = isPromoActive ? "Custom Racing Livery (FREE promo)" : "Custom Racing Livery (+€15)";
-                    colorsFormatted = `🎨 *${liveryTag}:* ${liveryName}\n` +
-                                      `   • Body & Doors: ${descBody}\n` +
-                                      `   • Handle: ${descHandle}\n` +
-                                      `   • Dividers: ${descDividers}`;
-                    if (state.model === 'full' || state.extras.portaSuperiore) colorsFormatted += `\n   • Top Cover: ${data.descTopTray_en}`;
-                    if (state.model === 'full' || state.extras.vascaExtra) colorsFormatted += `\n   • Lower Tray: ${data.descBottomTray_en}`;
-                    if (state.model === 'full' || state.extras.boxController) colorsFormatted += `\n   • Controller Box: ${data.descController_en}`;
-                } else {
-                    liveryTag = isPromoActive ? "Livrea Racing Custom (GRATIS promo)" : "Livrea Racing Custom (+15€)";
-                    colorsFormatted = `🎨 *${liveryTag}:* ${liveryName}\n` +
-                                      `   • Corpo e Porte: ${descBody}\n` +
-                                      `   • Maniglia: ${descHandle}\n` +
-                                      `   • Divisori: ${descDividers}`;
-                    if (state.model === 'full' || state.extras.portaSuperiore) colorsFormatted += `\n   • Porta Sup: ${data.descTopTray_it}`;
-                    if (state.model === 'full' || state.extras.vascaExtra) colorsFormatted += `\n   • Vasca Inf: ${data.descBottomTray_it}`;
-                    if (state.model === 'full' || state.extras.boxController) colorsFormatted += `\n   • Controller: ${data.descController_it}`;
+                colorsFormatted = (isEn ? `🎨 *Custom Racing Livery (+€15):* ${liveryTitle}%0A` : `🎨 *Livrea Racing Custom (+15€):* ${liveryTitle}%0A`) +
+                                  `   • ${isEn ? 'Body & Doors' : 'Corpo e Porte'}: ${descBody}%0A` +
+                                  `   • ${isEn ? 'Handle' : 'Maniglia'}: ${descHandle}%0A` +
+                                  `   • ${isEn ? 'Dividers' : 'Divisori'}: ${descDividers}`;
+                
+                if (state.model === 'full' || state.extras.portaSuperiore) {
+                    colorsFormatted += `%0A   • ${isEn ? 'Top Module' : 'Porta Sup'}: ${isEn ? data.descTopTrayEn : data.descTopTray}`;
+                }
+                if (state.model === 'full' || state.extras.vascaExtra) {
+                    colorsFormatted += `%0A   • ${isEn ? 'Lower Tray' : 'Vasca Inf'}: ${isEn ? data.descBottomTrayEn : data.descBottomTray}`;
+                }
+                if (state.model === 'full' || state.extras.organizzatoreScomparti) {
+                    colorsFormatted += `%0A   • ${isEn ? 'Compartment Organizer' : 'Organizzatore scomparti'}: ${isEn ? data.descOrganizerEn : data.descOrganizer}`;
+                }
+                if (state.model === 'full' || state.extras.boxController) {
+                    colorsFormatted += `%0A   • ${isEn ? 'Controller Box' : 'Controller'}: ${isEn ? data.descControllerEn : data.descController}`;
                 }
             } else {
-                colorsFormatted = isEn 
-                    ? `🎨 *Colors:* Standard / Factory Black-Red` 
-                    : `🎨 *Colori:* Standard / Random (Nero/Rosso)`;
+                colorsFormatted = isEn ? `🎨 *Colors:* Standard / Factory Random (Black/Red)` : `🎨 *Colori:* Standard / Random (Nero/Rosso)`;
             }
 
             let sizeFormatted = "";
@@ -1172,59 +1197,50 @@
                 const w = document.getElementById('customW').value || 'Std';
                 const h = document.getElementById('customH').value || 'Std';
                 const d = document.getElementById('customD').value || 'Std';
-                sizeFormatted = isEn 
-                    ? `📐 *Custom Dimensions (Free):* ${w}W x ${d}D x ${h}H mm` 
-                    : `📐 *Misure Custom (Gratuite):* ${w}L x ${d}P x ${h}H mm`;
+                sizeFormatted = isEn ? `%0A📐 *Custom Dimensions (Free):* ${w}W x ${d}D x ${h}H mm` : `%0A📐 *Misure Custom (Gratuite):* ${w}L x ${d}P x ${h}H mm`;
             } else {
                 const stdSize = state.model === 'full' ? '300L x 265P x 440H mm' : '300L x 265P x 300H mm';
-                sizeFormatted = isEn 
-                    ? `📐 *Dimensions:* Standard (${stdSize})` 
-                    : `📐 *Misure:* Standard (${stdSize})`;
+                sizeFormatted = isEn ? `%0A📐 *Dimensions:* Standard (${stdSize})` : `%0A📐 *Misure:* Standard (${stdSize})`;
             }
 
-            let promoText = "";
-            if (isPromoActive) {
-                promoText = isEn 
-                    ? `🎟️ *Promo Code:* FREE CUSTOM (Free Customizations)\n` 
-                    : `🎟️ *Codice Promo:* FREE CUSTOM (Personalizzazioni GRATIS)\n`;
+            let promoFormatted = "";
+            if (state.promoCode !== "" && state.promoDiscount > 0) {
+                promoFormatted = isEn ? `%0A🎟️ *Promo Code:* ${state.promoCode} (-€${state.promoDiscount})%0A` : `%0A🎟️ *Codice Promo:* ${state.promoCode} (-€${state.promoDiscount})%0A`;
             }
-            let emailText = userEmail ? `✉️ *Email:* ${userEmail}\n` : "";
 
             const total = calculateTotal();
-            let messageText = "";
+            const emailStr = userEmail ? ` (${userEmail})` : "";
 
+            let message = "";
             if (isEn) {
-                messageText = `Hello! I am ${userName}.\n` +
-                              `${emailText}` +
-                              `I just configured my *Modular Slotcar Case*:\n\n` +
-                              `📦 *Model:* ${modelName}\n` +
-                              `🚀 *Assembly:* ${assemblyName}\n` +
-                              `${sizeFormatted}\n\n` +
-                              `${colorsFormatted}\n\n` +
-                              `➕ *Extras & Accessories:*\n   • ${extrasText}\n\n` +
-                              `${promoText}` +
-                              `💰 *ESTIMATED TOTAL:* € ${total}\n\n` +
-                              `Can you confirm availability to proceed with my order?`;
+                message = `Hello! I am ${userName}${emailStr}. I just configured my *Modular Slotcar Case*:%0A%0A` +
+                          `📦 *Model:* ${modelName}%0A` +
+                          `🛠️ *Assembly:* ${assemblyName}%0A` +
+                          `${sizeFormatted}%0A%0A` +
+                          `${colorsFormatted}%0A%0A` +
+                          `➕ *Modules & Extras:*%0A   • ${extrasText}%0A` +
+                          `${promoFormatted}%0A` +
+                          `💰 *Estimated Total:* € ${total}%0A%0A` +
+                          `Could you please confirm availability to proceed with my order?`;
             } else {
-                messageText = `Ciao! Sono ${userName}.\n` +
-                              `${emailText}` +
-                              `Ho appena configurato la mia *Modular Slotcar Case*:\n\n` +
-                              `📦 *Modello:* ${modelName}\n` +
-                              `🚀 *Montaggio:* ${assemblyName}\n` +
-                              `${sizeFormatted}\n\n` +
-                              `${colorsFormatted}\n\n` +
-                              `➕ *Extra & Accessori:*\n   • ${extrasText}\n\n` +
-                              `${promoText}` +
-                              `💰 *TOTALE CALCOLATO:* € ${total}\n\n` +
-                              `Mi confermi la disponibilità per procedere con l'ordine?`;
+                message = `Ciao! Sono ${userName}${emailStr}. Ho appena configurato la mia *Modular Slotcar Case*:%0A%0A` +
+                          `📦 *Modello:* ${modelName}%0A` +
+                          `🛠️ *Montaggio:* ${assemblyName}%0A` +
+                          `${sizeFormatted}%0A%0A` +
+                          `${colorsFormatted}%0A%0A` +
+                          `➕ *Moduli & Extra:*%0A   • ${extrasText}%0A` +
+                          `${promoFormatted}%0A` +
+                          `💰 *Totale Calcolato:* € ${total}%0A%0A` +
+                          `Mi confermi la disponibilità per procedere con l'ordine?`;
             }
 
-            const fullUrl = "https://api.whatsapp.com/send?phone=" + MY_WHATSAPP_NUMBER + "&text=" + encodeURIComponent(messageText);
-            window.open(fullUrl, '_blank');
+            window.open(`https://wa.me/${MY_WHATSAPP_NUMBER}?text=${message}`, '_blank');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            updateExtraStates(); updateDividersSummary(); updateTotal();
+            updateExtraStates(); 
+            updateDividersSummary(); 
+            updateTotal();
         });
     </script>
 </body>
