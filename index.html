@@ -1122,11 +1122,11 @@
             if (!userName) { alert(t.alertName); return; }
 
             const modelName = state.model === 'base' ? 
-                (isEn ? 'Starter Pack (Base)' : 'Starter Pack (Base)') : 
+                (isEn ? 'Starter Pack' : 'Starter Pack') : 
                 (isEn ? 'Full Modular Case' : 'Valigetta Full');
 
             const assemblyName = state.assembly === 'diy' ? 
-                (isEn ? 'DIY Assembly Kit (+€0)' : 'Kit da Montare (DIY +€0)') : 
+                (isEn ? 'DIY Kit (+€0)' : 'Kit da Montare (DIY +€0)') : 
                 (isEn ? 'Ready-to-Race (+€69)' : 'Ready-to-Race (Montata +€69)');
 
             let extrasList = [];
@@ -1159,7 +1159,7 @@
                 extrasList.push(isEn ? `Custom Nameplate (+€15): "${plate}"` : `Targhetta Custom (+15€): "${plate}"`); 
             }
 
-            const extrasText = extrasList.length > 0 ? extrasList.join("%0A   • ") : (isEn ? "None" : "Nessuno");
+            const extrasText = extrasList.length > 0 ? extrasList.join("\n   • ") : (isEn ? "None" : "Nessuno");
 
             let colorsFormatted = "";
             if (state.colorMode === 'custom') {
@@ -1171,22 +1171,22 @@
                 const descHandle = isEn ? data.descHandleEn : data.descHandle;
                 const descDividers = isEn ? data.descDividersEn : data.descDividers;
 
-                colorsFormatted = (isEn ? `🎨 *Custom Racing Livery (+€15):* ${liveryTitle}%0A` : `🎨 *Livrea Racing Custom (+15€):* ${liveryTitle}%0A`) +
-                                  `   • ${isEn ? 'Body & Doors' : 'Corpo e Porte'}: ${descBody}%0A` +
-                                  `   • ${isEn ? 'Handle' : 'Maniglia'}: ${descHandle}%0A` +
+                colorsFormatted = (isEn ? `🎨 *Custom Racing Livery (+€15):* ${liveryTitle}\n` : `🎨 *Livrea Racing Custom (+15€):* ${liveryTitle}\n`) +
+                                  `   • ${isEn ? 'Body & Doors' : 'Corpo e Porte'}: ${descBody}\n` +
+                                  `   • ${isEn ? 'Handle' : 'Maniglia'}: ${descHandle}\n` +
                                   `   • ${isEn ? 'Dividers' : 'Divisori'}: ${descDividers}`;
                 
                 if (state.model === 'full' || state.extras.portaSuperiore) {
-                    colorsFormatted += `%0A   • ${isEn ? 'Top Module' : 'Porta Sup'}: ${isEn ? data.descTopTrayEn : data.descTopTray}`;
+                    colorsFormatted += `\n   • ${isEn ? 'Top Module' : 'Porta Sup'}: ${isEn ? data.descTopTrayEn : data.descTopTray}`;
                 }
                 if (state.model === 'full' || state.extras.vascaExtra) {
-                    colorsFormatted += `%0A   • ${isEn ? 'Lower Tray' : 'Vasca Inf'}: ${isEn ? data.descBottomTrayEn : data.descBottomTray}`;
+                    colorsFormatted += `\n   • ${isEn ? 'Lower Tray' : 'Vasca Inf'}: ${isEn ? data.descBottomTrayEn : data.descBottomTray}`;
                 }
                 if (state.model === 'full' || state.extras.organizzatoreScomparti) {
-                    colorsFormatted += `%0A   • ${isEn ? 'Compartment Organizer' : 'Organizzatore scomparti'}: ${isEn ? data.descOrganizerEn : data.descOrganizer}`;
+                    colorsFormatted += `\n   • ${isEn ? 'Compartment Organizer' : 'Organizzatore scomparti'}: ${isEn ? data.descOrganizerEn : data.descOrganizer}`;
                 }
                 if (state.model === 'full' || state.extras.boxController) {
-                    colorsFormatted += `%0A   • ${isEn ? 'Controller Box' : 'Controller'}: ${isEn ? data.descControllerEn : data.descController}`;
+                    colorsFormatted += `\n   • ${isEn ? 'Controller Box' : 'Controller'}: ${isEn ? data.descControllerEn : data.descController}`;
                 }
             } else {
                 colorsFormatted = isEn ? `🎨 *Colors:* Standard / Factory Random (Black/Red)` : `🎨 *Colori:* Standard / Random (Nero/Rosso)`;
@@ -1197,44 +1197,47 @@
                 const w = document.getElementById('customW').value || 'Std';
                 const h = document.getElementById('customH').value || 'Std';
                 const d = document.getElementById('customD').value || 'Std';
-                sizeFormatted = isEn ? `%0A📐 *Custom Dimensions (Free):* ${w}W x ${d}D x ${h}H mm` : `%0A📐 *Misure Custom (Gratuite):* ${w}L x ${d}P x ${h}H mm`;
+                sizeFormatted = isEn ? `\n📐 *Custom Dimensions (Free):* ${w}W x ${d}D x ${h}H mm` : `\n📐 *Misure Custom (Gratuite):* ${w}L x ${d}P x ${h}H mm`;
             } else {
                 const stdSize = state.model === 'full' ? '300L x 265P x 440H mm' : '300L x 265P x 300H mm';
-                sizeFormatted = isEn ? `%0A📐 *Dimensions:* Standard (${stdSize})` : `%0A📐 *Misure:* Standard (${stdSize})`;
+                sizeFormatted = isEn ? `\n📐 *Dimensions:* Standard (${stdSize})` : `\n📐 *Misure:* Standard (${stdSize})`;
             }
 
             let promoFormatted = "";
             if (state.promoCode !== "" && state.promoDiscount > 0) {
-                promoFormatted = isEn ? `%0A🎟️ *Promo Code:* ${state.promoCode} (-€${state.promoDiscount})%0A` : `%0A🎟️ *Codice Promo:* ${state.promoCode} (-€${state.promoDiscount})%0A`;
+                promoFormatted = isEn ? `\n🎟️ *Promo Code:* ${state.promoCode} (-€${state.promoDiscount})\n` : `\n🎟️ *Codice Promo:* ${state.promoCode} (-€${state.promoDiscount})\n`;
             }
 
             const total = calculateTotal();
-            const emailStr = userEmail ? ` (${userEmail})` : "";
+            const emailStr = userEmail ? (isEn ? `\n✉️ *Email:* ${userEmail}` : `\n✉️ *Email:* ${userEmail}`) : "";
 
-            let message = "";
+            let messageText = "";
             if (isEn) {
-                message = `Hello! I am ${userName}${emailStr}. I just configured my *Modular Slotcar Case*:%0A%0A` +
-                          `📦 *Model:* ${modelName}%0A` +
-                          `🛠️ *Assembly:* ${assemblyName}%0A` +
-                          `${sizeFormatted}%0A%0A` +
-                          `${colorsFormatted}%0A%0A` +
-                          `➕ *Modules & Extras:*%0A   • ${extrasText}%0A` +
-                          `${promoFormatted}%0A` +
-                          `💰 *Estimated Total:* € ${total}%0A%0A` +
-                          `Could you please confirm availability to proceed with my order?`;
+                messageText = `Hello! I am ${userName}.${emailStr}\n` +
+                              `I just configured my *Modular Slotcar Case*:\n\n` +
+                              `📦 *Model:* ${modelName}\n` +
+                              `🛠️ *Assembly:* ${assemblyName}` +
+                              `${sizeFormatted}\n\n` +
+                              `${colorsFormatted}\n\n` +
+                              `➕ *Modules & Extras:*\n   • ${extrasText}\n` +
+                              `${promoFormatted}\n` +
+                              `💰 *TOTAL ESTIMATED:* € ${total}\n\n` +
+                              `Could you please confirm availability to proceed with my order?`;
             } else {
-                message = `Ciao! Sono ${userName}${emailStr}. Ho appena configurato la mia *Modular Slotcar Case*:%0A%0A` +
-                          `📦 *Modello:* ${modelName}%0A` +
-                          `🛠️ *Montaggio:* ${assemblyName}%0A` +
-                          `${sizeFormatted}%0A%0A` +
-                          `${colorsFormatted}%0A%0A` +
-                          `➕ *Moduli & Extra:*%0A   • ${extrasText}%0A` +
-                          `${promoFormatted}%0A` +
-                          `💰 *Totale Calcolato:* € ${total}%0A%0A` +
-                          `Mi confermi la disponibilità per procedere con l'ordine?`;
+                messageText = `Ciao! Sono ${userName}.${emailStr}\n` +
+                              `Ho appena configurato la mia *Modular Slotcar Case*:\n\n` +
+                              `📦 *Modello:* ${modelName}\n` +
+                              `🛠️ *Montaggio:* ${assemblyName}` +
+                              `${sizeFormatted}\n\n` +
+                              `${colorsFormatted}\n\n` +
+                              `➕ *Moduli & Extra:*\n   • ${extrasText}\n` +
+                              `${promoFormatted}\n` +
+                              `💰 *TOTALE CALCOLATO:* € ${total}\n\n` +
+                              `Mi confermi la disponibilità per procedere con l'ordine?`;
             }
 
-            window.open(`https://wa.me/${MY_WHATSAPP_NUMBER}?text=${message}`, '_blank');
+            const fullUrl = "https://api.whatsapp.com/send?phone=" + MY_WHATSAPP_NUMBER + "&text=" + encodeURIComponent(messageText);
+            window.open(fullUrl, '_blank');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
